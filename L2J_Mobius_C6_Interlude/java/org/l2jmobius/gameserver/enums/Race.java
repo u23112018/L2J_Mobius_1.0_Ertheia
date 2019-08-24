@@ -14,13 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.l2jmobius.gameserver.model.base;
+package org.l2jmobius.gameserver.enums;
 
-public enum PlayerRace
+/**
+ * Creature races enumerated.
+ * @author Zealar
+ */
+public enum Race
 {
-	Human,
-	LightElf,
-	DarkElf,
-	Orc,
-	Dwarf
+	HUMAN,
+	ELF,
+	DARK_ELF,
+	ORC,
+	DWARF;
 }
