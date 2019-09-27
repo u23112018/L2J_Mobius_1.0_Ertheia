@@ -17,23 +17,23 @@
 package org.l2jmobius.gameserver.network.clientpackets;
 
 import org.l2jmobius.commons.network.PacketReader;
+import org.l2jmobius.gameserver.data.xml.impl.TeleportListData;
 import org.l2jmobius.gameserver.model.actor.instance.PlayerInstance;
+import org.l2jmobius.gameserver.model.holders.TeleportListHolder;
 import org.l2jmobius.gameserver.network.GameClient;
+import org.l2jmobius.gameserver.network.SystemMessageId;
 
 /**
- * @version $Revision: 1.3.4.2 $ $Date: 2005/03/27 15:29:30 $
+ * @author NviX
  */
-public class RequestShortCutDel implements IClientIncomingPacket
+public class ExRequestTeleport implements IClientIncomingPacket
 {
-	private int _slot;
-	private int _page;
+	private int _locId;
 	
 	@Override
 	public boolean read(GameClient client, PacketReader packet)
 	{
-		final int id = packet.readD();
-		_slot = id % 12;
-		_page = id / 12;
+		_locId = packet.readD();
 		return true;
 	}
 	
@@ -46,12 +46,29 @@ public class RequestShortCutDel implements IClientIncomingPacket
 			return;
 		}
 		
-		if ((_page > 23) || (_page < 0))
+		boolean success = false;
+		
+		for (TeleportListHolder teleport : TeleportListData.getInstance().getTeleports())
 		{
-			return;
+			if (teleport.getLocId() == _locId)
+			{
+				if (player.getAdena() < teleport.getPrice())
+				{
+					player.sendPacket(SystemMessageId.YOU_DO_NOT_HAVE_ENOUGH_ADENA);
+					return;
+				}
+				
+				player.reduceAdena("teleport", teleport.getPrice(), player, true);
+				player.teleToLocation(teleport.getX(), teleport.getY(), teleport.getZ());
+				success = true;
+				break;
+			}
 		}
 		
-		player.deleteShortCut(_slot, _page);
-		// client needs no confirmation. this packet is just to inform the server
+		if (!success)
+		{
+			LOGGER.info("No registered teleport location for id: " + _locId);
+			return;
+		}
 	}
 }
