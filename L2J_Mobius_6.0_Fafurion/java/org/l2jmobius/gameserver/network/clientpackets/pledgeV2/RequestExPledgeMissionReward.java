@@ -14,28 +14,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.l2jmobius.gameserver.network.clientpackets.dailymission;
+package org.l2jmobius.gameserver.network.clientpackets.pledgeV2;
+
+import java.util.Collection;
 
 import org.l2jmobius.commons.network.PacketReader;
+import org.l2jmobius.gameserver.data.xml.impl.DailyMissionData;
+import org.l2jmobius.gameserver.model.DailyMissionDataHolder;
 import org.l2jmobius.gameserver.model.actor.instance.PlayerInstance;
 import org.l2jmobius.gameserver.network.GameClient;
 import org.l2jmobius.gameserver.network.clientpackets.IClientIncomingPacket;
-import org.l2jmobius.gameserver.network.serverpackets.dailymission.ExOneDayReceiveRewardList;
+import org.l2jmobius.gameserver.network.serverpackets.pledgeV2.ExPledgeMissionInfo;
+import org.l2jmobius.gameserver.network.serverpackets.pledgeV2.ExPledgeMissionRewardCount;
 
 /**
- * @author UnAfraid
+ * @author Mobius
  */
-public class RequestTodoList implements IClientIncomingPacket
+public class RequestExPledgeMissionReward implements IClientIncomingPacket
 {
-	private int _tab;
-	@SuppressWarnings("unused")
-	private boolean _showAllLevels;
+	private int _id;
 	
 	@Override
 	public boolean read(GameClient client, PacketReader packet)
 	{
-		_tab = packet.readC(); // Daily Reward = 9, Event = 1, Instance Zone = 2
-		_showAllLevels = packet.readC() == 1; // Disabled = 0, Enabled = 1
+		_id = packet.readD();
 		return true;
 	}
 	
@@ -43,29 +45,19 @@ public class RequestTodoList implements IClientIncomingPacket
 	public void run(GameClient client)
 	{
 		final PlayerInstance player = client.getPlayer();
-		if (player == null)
+		if ((player == null) || (player.getClan() == null))
 		{
 			return;
 		}
 		
-		switch (_tab)
+		final Collection<DailyMissionDataHolder> reward = DailyMissionData.getInstance().getDailyMissionData(_id);
+		if ((reward == null) || reward.isEmpty())
 		{
-			// case 1:
-			// {
-			// player.sendPacket(new ExTodoListInzone());
-			// break;
-			// }
-			// case 2:
-			// {
-			// player.sendPacket(new ExTodoListInzone());
-			// break;
-			// }
-			case 9: // Daily Rewards
-			{
-				// Initial EW request should be false
-				player.sendPacket(new ExOneDayReceiveRewardList(player, true));
-				break;
-			}
+			return;
 		}
+		
+		reward.stream().filter(o -> o.isDisplayable(player)).forEach(r -> r.requestReward(player));
+		client.sendPacket(new ExPledgeMissionRewardCount(player));
+		client.sendPacket(new ExPledgeMissionInfo(player));
 	}
 }

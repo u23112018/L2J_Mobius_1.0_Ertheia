@@ -14,29 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.l2jmobius.gameserver.network.clientpackets.dailymission;
-
-import java.util.Collection;
+package org.l2jmobius.gameserver.network.clientpackets.pledgeV2;
 
 import org.l2jmobius.commons.network.PacketReader;
-import org.l2jmobius.gameserver.data.xml.impl.DailyMissionData;
-import org.l2jmobius.gameserver.model.DailyMissionDataHolder;
 import org.l2jmobius.gameserver.model.actor.instance.PlayerInstance;
 import org.l2jmobius.gameserver.network.GameClient;
 import org.l2jmobius.gameserver.network.clientpackets.IClientIncomingPacket;
-import org.l2jmobius.gameserver.network.serverpackets.dailymission.ExOneDayReceiveRewardList;
+import org.l2jmobius.gameserver.network.serverpackets.pledgeV2.ExPledgeMissionInfo;
+import org.l2jmobius.gameserver.network.serverpackets.pledgeV2.ExPledgeMissionRewardCount;
 
 /**
- * @author Sdw
- */
-public class RequestOneDayRewardReceive implements IClientIncomingPacket
+ * @author Bonux (bonuxq@gmail.com)
+ * @date 29.09.2019
+ **/
+public class RequestExPledgeMissionInfo implements IClientIncomingPacket
 {
-	private int _id;
-	
 	@Override
 	public boolean read(GameClient client, PacketReader packet)
 	{
-		_id = packet.readH();
 		return true;
 	}
 	
@@ -49,14 +44,7 @@ public class RequestOneDayRewardReceive implements IClientIncomingPacket
 			return;
 		}
 		
-		final Collection<DailyMissionDataHolder> reward = DailyMissionData.getInstance().getDailyMissionData(_id);
-		if ((reward == null) || reward.isEmpty())
-		{
-			return;
-		}
-		
-		reward.stream().filter(o -> o.isDisplayable(player)).forEach(r -> r.requestReward(player));
-		// player.sendPacket(new ExConnectedTimeAndGettableReward(player));
-		player.sendPacket(new ExOneDayReceiveRewardList(player, true));
+		client.sendPacket(new ExPledgeMissionRewardCount(player));
+		client.sendPacket(new ExPledgeMissionInfo(player));
 	}
 }

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.l2jmobius.gameserver.network.serverpackets.dailymission;
+package org.l2jmobius.gameserver.network.serverpackets.pledgeV2;
 
 import org.l2jmobius.commons.network.PacketWriter;
 import org.l2jmobius.gameserver.data.xml.impl.DailyMissionData;
@@ -23,38 +23,28 @@ import org.l2jmobius.gameserver.network.OutgoingPackets;
 import org.l2jmobius.gameserver.network.serverpackets.IClientOutgoingPacket;
 
 /**
- * @author Sdw
- */
-public class ExConnectedTimeAndGettableReward implements IClientOutgoingPacket
+ * @author Bonux (bonuxq@gmail.com)
+ * @date 29.09.2019
+ **/
+public class ExPledgeMissionRewardCount implements IClientOutgoingPacket
 {
-	private final int _oneDayRewardAvailableCount;
+	private final int _doneMissionsCount;
+	private final int _availableMissionsCount;
 	
-	public ExConnectedTimeAndGettableReward(PlayerInstance player)
+	public ExPledgeMissionRewardCount(PlayerInstance player)
 	{
-		_oneDayRewardAvailableCount = DailyMissionData.getInstance().getDailyMissionData(player).size();
+		_doneMissionsCount = (int) DailyMissionData.getInstance().getDailyMissionData(player).stream().filter(d -> d.getRecentlyCompleted(player)).count();
+		_availableMissionsCount = DailyMissionData.getInstance().getDailyMissionData(player).size();
 	}
 	
 	@Override
 	public boolean write(PacketWriter packet)
 	{
-		if (!DailyMissionData.getInstance().isAvailable())
-		{
-			return true;
-		}
+		OutgoingPackets.EX_PLEDGE_MISSION_REWARD_COUNT.writeId(packet);
 		
-		OutgoingPackets.EX_CONNECTED_TIME_AND_GETTABLE_REWARD.writeId(packet);
-		packet.writeD(0x00);
-		packet.writeD(_oneDayRewardAvailableCount);
-		packet.writeD(0x00);
-		packet.writeD(0x00);
-		packet.writeD(0x00);
-		packet.writeD(0x00);
-		packet.writeD(0x00);
-		packet.writeD(0x00);
-		packet.writeD(0x00);
-		packet.writeD(0x00);
-		packet.writeD(0x00);
-		packet.writeD(0x00);
+		packet.writeD(Math.min(_availableMissionsCount, _doneMissionsCount)); // Received missions rewards.
+		packet.writeD(_availableMissionsCount); // Available missions rewards. 18 - for noble, 20 - for honnorable noble.
+		
 		return true;
 	}
 }
