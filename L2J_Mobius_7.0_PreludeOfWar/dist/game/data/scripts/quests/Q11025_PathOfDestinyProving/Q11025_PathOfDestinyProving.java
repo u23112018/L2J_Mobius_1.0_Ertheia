@@ -46,7 +46,7 @@ public class Q11025_PathOfDestinyProving extends Quest
 	private static final int TARTI = 34505;
 	private static final int RAYMOND = 30289;
 	private static final int TERESIA = 33981;
-	private static final int MYSTERIOUS_MAGE = 33980;
+	private static final int MYSTERIOUS_MAGE = 1033980; // TODO: Find proper ID.
 	private static final int SKELETON_ARCHER = 27529;
 	private static final int SKELETON_WARRIOR = 27528;
 	// Items
@@ -88,7 +88,7 @@ public class Q11025_PathOfDestinyProving extends Quest
 			case "34505-08.html":
 			case "34505-09.html":
 			case "34505-12.html":
-			case "33980-02.html":
+			case "1033980-02.html":
 			{
 				htmltext = event;
 				break;

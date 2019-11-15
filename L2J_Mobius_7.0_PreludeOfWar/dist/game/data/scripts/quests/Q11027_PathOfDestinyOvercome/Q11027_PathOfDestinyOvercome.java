@@ -14,12 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package quests.Q11026_PathOfDestinyConviction;
+package quests.Q11027_PathOfDestinyOvercome;
 
 import org.l2jmobius.Config;
 import org.l2jmobius.gameserver.data.xml.impl.CategoryData;
 import org.l2jmobius.gameserver.enums.CategoryType;
-import org.l2jmobius.gameserver.enums.Movie;
 import org.l2jmobius.gameserver.enums.Race;
 import org.l2jmobius.gameserver.model.Location;
 import org.l2jmobius.gameserver.model.actor.Npc;
@@ -33,44 +32,39 @@ import org.l2jmobius.gameserver.model.quest.Quest;
 import org.l2jmobius.gameserver.model.quest.QuestState;
 import org.l2jmobius.gameserver.model.quest.State;
 import org.l2jmobius.gameserver.network.NpcStringId;
-import org.l2jmobius.gameserver.network.serverpackets.ExShowScreenMessage;
 import org.l2jmobius.gameserver.network.serverpackets.classchange.ExRequestClassChangeUi;
 
-import quests.Q11025_PathOfDestinyProving.Q11025_PathOfDestinyProving;
+import quests.Q11026_PathOfDestinyConviction.Q11026_PathOfDestinyConviction;
 
 /**
- * Path of Destiny - Conviction (11026)
- * @URL https://l2wiki.com/Path_of_Destiny_-_Conviction
+ * Path of Destiny - Overcome (11027)
+ * @URL https://l2wiki.com/Path_of_Destiny_-_Overcome
  * @author Dmitri, Mobius
  */
-public class Q11026_PathOfDestinyConviction extends Quest
+public class Q11027_PathOfDestinyOvercome extends Quest
 {
 	// NPCs
 	private static final int TARTI = 34505;
 	private static final int RAYMOND = 30289;
-	private static final int KAIN_VAN_HALTER = 34339;
-	private static final int MYSTERIOUS_MAGE = 31522;
-	private static final int VAMPIRE_SOLDIER = 21582;
-	private static final int VON_HELLMANN = 19566;
+	private static final int GERETH = 33932;
 	// Items
-	private static final int WIND_SPIRIT = 80673;
+	private static final int PROPHECY_MACHINE = 39540;
+	private static final int ATELIA = 39542;
 	// Location
-	private static final Location TELEPORT_1 = new Location(57983, -28955, 568);
+	private static final Location TELEPORT_1 = new Location(-78670, 251026, -2960);
 	private static final Location TELEPORT_2 = new Location(-14180, 123840, -3120);
 	// Misc
-	private static final int MIN_LEVEL = 76;
+	private static final int MIN_LEVEL = 85;
 	
-	public Q11026_PathOfDestinyConviction()
+	public Q11027_PathOfDestinyOvercome()
 	{
-		super(11026);
+		super(11027);
 		addStartNpc(TARTI);
-		addTalkId(TARTI, RAYMOND, KAIN_VAN_HALTER, MYSTERIOUS_MAGE);
-		addFirstTalkId(KAIN_VAN_HALTER, MYSTERIOUS_MAGE);
-		addKillId(VAMPIRE_SOLDIER, VON_HELLMANN);
-		registerQuestItems(WIND_SPIRIT);
-		addCondMinLevel(41, "33963-06.html"); // Not retail, just don't want to see it as unavailable when picking up next quest.
-		addCondCompletedQuest(Q11025_PathOfDestinyProving.class.getSimpleName(), "33963-06.html");
-		setQuestNameNpcStringId(NpcStringId.LV_40_PATH_OF_DESTINY_CONVICTION);
+		addTalkId(TARTI, RAYMOND, GERETH);
+		registerQuestItems(PROPHECY_MACHINE, ATELIA);
+		addCondMinLevel(77, "34505-11.html"); // Not retail, just don't want to see it as unavailable when picking up next quest.
+		addCondCompletedQuest(Q11026_PathOfDestinyConviction.class.getSimpleName(), "34505-11.html");
+		setQuestNameNpcStringId(NpcStringId.LV_76_PATH_OF_DESTINY_OVERCOME);
 	}
 	
 	@Override
@@ -85,19 +79,12 @@ public class Q11026_PathOfDestinyConviction extends Quest
 		
 		switch (event)
 		{
-			case "34505-08.html":
-			case "34505-09.html":
-			case "34505-11.html":
 			case "30289-03.html":
-			case "34339-02.html":
-			case "34339-03.html":
-			case "34339-04.html":
-			case "34339-05.html":
-			case "34339-06.html":
-			case "34339-07.html":
-			case "34339-08.html":
-			case "34339-09.html":
-			case "34339-11.html":
+			case "33932-02.html":
+			case "33932-03.html":
+			case "33932-04.html":
+			case "33932-05.html":
+			case "33932-06.html":
 			{
 				htmltext = event;
 				break;
@@ -131,49 +118,35 @@ public class Q11026_PathOfDestinyConviction extends Quest
 				if (qs.isCond(2))
 				{
 					qs.setCond(3, true);
+					giveItems(player, PROPHECY_MACHINE, 1);
+					htmltext = event;
 				}
-				htmltext = event;
 				break;
 			}
 			case "teleport":
 			{
 				if (qs.isCond(3))
 				{
-					final Npc mob = addSpawn(VAMPIRE_SOLDIER, 57983, -28955, 568, 0, true, 180000);
-					addAttackPlayerDesire(mob, player);
 					player.teleToLocation(TELEPORT_1);
 				}
 				break;
 			}
-			case "34339-10.html":
+			case "teleport_k":
 			{
-				if (qs.isCond(3))
+				if (qs.isCond(6))
 				{
-					addSpawn(MYSTERIOUS_MAGE, npc.getX() + 40, npc.getY() + 40, npc.getZ(), npc.getHeading(), false, 120000);
-					showOnScreenMsg(player, NpcStringId.TALK_TO_THE_MYSTERIOUS_WIZARD, ExShowScreenMessage.TOP_CENTER, 10000);
-					break;
-				}
-			}
-			case "falver":
-			{
-				if (qs.isCond(3))
-				{
-					qs.setCond(4, true);
-					playMovie(player, Movie.SI_CHOICE_OF_KAIN_A);
-					giveItems(player, WIND_SPIRIT, 1);
 					player.teleToLocation(TELEPORT_2);
-					htmltext = event;
 				}
 				break;
 			}
-			case "34505-10.html":
+			case "34505-07.html":
 			{
-				if (qs.isCond(4))
+				if (qs.isCond(6))
 				{
 					addExpAndSp(player, 14281098, 12852);
 					qs.exitQuest(false, true);
-					if (CategoryData.getInstance().isInCategory(CategoryType.THIRD_CLASS_GROUP, player.getClassId().getId()) || //
-						(CategoryData.getInstance().isInCategory(CategoryType.SECOND_CLASS_GROUP, player.getClassId().getId()) && (player.getRace() == Race.ERTHEIA)))
+					if (CategoryData.getInstance().isInCategory(CategoryType.FOURTH_CLASS_GROUP, player.getClassId().getId()) || //
+						(CategoryData.getInstance().isInCategory(CategoryType.THIRD_CLASS_GROUP, player.getClassId().getId()) && (player.getRace() == Race.ERTHEIA)))
 					{
 						player.sendPacket(ExRequestClassChangeUi.STATIC_PACKET);
 					}
@@ -217,7 +190,7 @@ public class Q11026_PathOfDestinyConviction extends Quest
 							}
 							else
 							{
-								htmltext = "34505-06.html";
+								htmltext = "34505-11.html";
 							}
 							break;
 						}
@@ -226,9 +199,9 @@ public class Q11026_PathOfDestinyConviction extends Quest
 							htmltext = "34505-05.html"; // TODO: Proper second talk dialog.
 							break;
 						}
-						else if (qs.isCond(4))
+						else if (qs.isCond(6) && hasQuestItems(player, ATELIA))
 						{
-							htmltext = "34505-07.html";
+							htmltext = "34505-06.html";
 						}
 						break;
 					}
@@ -240,19 +213,16 @@ public class Q11026_PathOfDestinyConviction extends Quest
 						}
 						break;
 					}
-					case KAIN_VAN_HALTER:
+					case GERETH:
 					{
 						if (qs.isCond(3))
 						{
-							htmltext = "34339-01.html";
+							htmltext = "33932-01.html";
 						}
-						break;
-					}
-					case MYSTERIOUS_MAGE:
-					{
-						if (qs.isCond(3))
+						else if (qs.isCond(5))
 						{
-							htmltext = "31522-01.html";
+							qs.setCond(6, true);
+							htmltext = "33932-07.html";
 						}
 						break;
 					}
@@ -274,31 +244,6 @@ public class Q11026_PathOfDestinyConviction extends Quest
 		return npc.getId() + "-01.html";
 	}
 	
-	@Override
-	public String onKill(Npc npc, PlayerInstance killer, boolean isSummon)
-	{
-		final QuestState qs = getQuestState(killer, false);
-		if ((qs != null) && qs.isCond(3))
-		{
-			switch (npc.getId())
-			{
-				case VAMPIRE_SOLDIER:
-				{
-					final Npc mob = addSpawn(VON_HELLMANN, npc, false, 120000);
-					addAttackPlayerDesire(mob, killer);
-					break;
-				}
-				case VON_HELLMANN:
-				{
-					playMovie(killer, Movie.SI_CHOICE_OF_KAIN_B);
-					addSpawn(KAIN_VAN_HALTER, 57983, -28955, 568, 0, false, 120000);
-					break;
-				}
-			}
-		}
-		return super.onKill(npc, killer, isSummon);
-	}
-	
 	@RegisterEvent(EventType.ON_PLAYER_LOGIN)
 	@RegisterType(ListenerRegisterType.GLOBAL_PLAYERS)
 	public void OnPlayerLogin(OnPlayerLogin event)
@@ -316,12 +261,12 @@ public class Q11026_PathOfDestinyConviction extends Quest
 		
 		if (player.getRace() == Race.ERTHEIA)
 		{
-			if (!CategoryData.getInstance().isInCategory(CategoryType.SECOND_CLASS_GROUP, player.getClassId().getId()))
+			if (!CategoryData.getInstance().isInCategory(CategoryType.THIRD_CLASS_GROUP, player.getClassId().getId()))
 			{
 				return;
 			}
 		}
-		else if (!CategoryData.getInstance().isInCategory(CategoryType.THIRD_CLASS_GROUP, player.getClassId().getId()))
+		else if (!CategoryData.getInstance().isInCategory(CategoryType.FOURTH_CLASS_GROUP, player.getClassId().getId()))
 		{
 			return;
 		}
