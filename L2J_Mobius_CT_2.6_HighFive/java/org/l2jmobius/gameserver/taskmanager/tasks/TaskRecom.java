@@ -48,14 +48,14 @@ public class TaskRecom extends Task
 		{
 			try (PreparedStatement ps = con.prepareStatement("UPDATE character_reco_bonus SET rec_left=?, time_left=?, rec_have=0 WHERE rec_have <=  20"))
 			{
-				ps.setInt(1, 0); // Rec left = 0
+				ps.setInt(1, 20); // Rec left = 20
 				ps.setInt(2, 3600000); // Timer = 1 hour
 				ps.execute();
 			}
 			
 			try (PreparedStatement ps = con.prepareStatement("UPDATE character_reco_bonus SET rec_left=?, time_left=?, rec_have=GREATEST(rec_have-20,0) WHERE rec_have > 20"))
 			{
-				ps.setInt(1, 0); // Rec left = 0
+				ps.setInt(1, 20); // Rec left = 20
 				ps.setInt(2, 3600000); // Timer = 1 hour
 				ps.execute();
 			}
@@ -77,7 +77,7 @@ public class TaskRecom extends Task
 				}
 			}
 		}
-		LOGGER.info("Recommendations System reseted");
+		LOGGER.info("Recommendations System reseted.");
 	}
 	
 	@Override
