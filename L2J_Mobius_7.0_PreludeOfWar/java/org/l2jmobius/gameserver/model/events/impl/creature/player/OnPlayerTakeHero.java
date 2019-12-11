@@ -14,27 +14,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.l2jmobius.gameserver.network.clientpackets.ranking;
+package org.l2jmobius.gameserver.model.events.impl.creature.player;
 
-import org.l2jmobius.commons.network.PacketReader;
-import org.l2jmobius.gameserver.network.GameClient;
-import org.l2jmobius.gameserver.network.clientpackets.IClientIncomingPacket;
-import org.l2jmobius.gameserver.network.serverpackets.ranking.ExRankingCharInfo;
+import org.l2jmobius.gameserver.model.actor.instance.PlayerInstance;
+import org.l2jmobius.gameserver.model.events.EventType;
+import org.l2jmobius.gameserver.model.events.impl.IBaseEvent;
 
 /**
- * @author JoeAlisson
+ * @author Mobius
  */
-public class ExRankCharInfo implements IClientIncomingPacket
+public class OnPlayerTakeHero implements IBaseEvent
 {
-	@Override
-	public boolean read(GameClient client, PacketReader packet)
+	private final PlayerInstance _player;
+	
+	public OnPlayerTakeHero(PlayerInstance player)
 	{
-		return true;
+		_player = player;
+	}
+	
+	public PlayerInstance getPlayer()
+	{
+		return _player;
 	}
 	
 	@Override
-	public void run(GameClient client)
+	public EventType getType()
 	{
-		client.sendPacket(new ExRankingCharInfo());
+		return EventType.ON_PLAYER_TRANSFORM;
 	}
 }
