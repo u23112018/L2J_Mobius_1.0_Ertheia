@@ -16,8 +16,8 @@
  */
 package org.l2jmobius.gameserver.network.clientpackets;
 
+import org.l2jmobius.Config;
 import org.l2jmobius.commons.network.PacketReader;
-import org.l2jmobius.gameserver.cache.HtmCache;
 import org.l2jmobius.gameserver.model.actor.instance.PlayerInstance;
 import org.l2jmobius.gameserver.network.GameClient;
 import org.l2jmobius.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -25,7 +25,7 @@ import org.l2jmobius.gameserver.network.serverpackets.NpcHtmlMessage;
 /**
  * @author Mobius
  */
-public class ExOpenDimensionalHtml implements IClientIncomingPacket
+public class ExOpenHtml implements IClientIncomingPacket
 {
 	@Override
 	public boolean read(GameClient client, PacketReader packet)
@@ -38,15 +38,11 @@ public class ExOpenDimensionalHtml implements IClientIncomingPacket
 	public void run(GameClient client)
 	{
 		final PlayerInstance player = client.getPlayer();
-		if (player == null)
+		if ((player != null) && Config.PC_CAFE_ENABLED)
 		{
-			return;
+			final NpcHtmlMessage html = new NpcHtmlMessage();
+			html.setFile(player, "data/html/pccafe.htm");
+			player.sendPacket(html);
 		}
-		
-		// FIXME:
-		// client.sendPacket(new ExPremiumManagerShowHtml(HtmCache.getInstance().getHtm(player, "data/scripts/ai/others/DimensionalMerchant/32478.html")));
-		final NpcHtmlMessage html = new NpcHtmlMessage();
-		html.setHtml(HtmCache.getInstance().getHtm(player, "data/scripts/ai/others/DimensionalMerchant/32478.html"));
-		player.sendPacket(html);
 	}
 }
