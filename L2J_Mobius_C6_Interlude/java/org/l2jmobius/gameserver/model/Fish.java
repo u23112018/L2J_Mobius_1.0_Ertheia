@@ -16,48 +16,36 @@
  */
 package org.l2jmobius.gameserver.model;
 
-public class FishData
+import org.l2jmobius.gameserver.GameTimeController;
+
+/**
+ * A datatype used to retain a fish information.
+ */
+public class Fish
 {
 	private final int _id;
 	private final int _level;
-	private final String _name;
 	private final int _hp;
 	private final int _hpRegen;
-	private int _type;
+	private final int _type;
 	private final int _group;
-	private final int _fishGuts;
+	private final int _guts;
 	private final int _gutsCheckTime;
 	private final int _waitTime;
 	private final int _combatTime;
 	
-	public FishData(int id, int lvl, String name, int hp, int hpRegen, int type, int group, int fishGuts, int gutsCheckTime, int waitTime, int combatTime)
+	public Fish(StatsSet set)
 	{
-		_id = id;
-		_level = lvl;
-		_name = name.intern();
-		_hp = hp;
-		_hpRegen = hpRegen;
-		_type = type;
-		_group = group;
-		_fishGuts = fishGuts;
-		_gutsCheckTime = gutsCheckTime;
-		_waitTime = waitTime;
-		_combatTime = combatTime;
-	}
-	
-	public FishData(FishData copyOf)
-	{
-		_id = copyOf.getId();
-		_level = copyOf.getLevel();
-		_name = copyOf.getName();
-		_hp = copyOf.getHP();
-		_hpRegen = copyOf.getHpRegen();
-		_type = copyOf.getType();
-		_group = copyOf.getGroup();
-		_fishGuts = copyOf.getFishGuts();
-		_gutsCheckTime = copyOf.getGutsCheckTime();
-		_waitTime = copyOf.getWaitTime();
-		_combatTime = copyOf.getCombatTime();
+		_id = set.getInt("id");
+		_level = set.getInt("level");
+		_hp = set.getInt("hp");
+		_hpRegen = set.getInt("hpRegen");
+		_type = set.getInt("type");
+		_group = set.getInt("group");
+		_guts = set.getInt("guts");
+		_gutsCheckTime = set.getInt("gutsCheckTime");
+		_waitTime = set.getInt("waitTime");
+		_combatTime = set.getInt("combatTime");
 	}
 	
 	public int getId()
@@ -70,12 +58,7 @@ public class FishData
 		return _level;
 	}
 	
-	public String getName()
-	{
-		return _name;
-	}
-	
-	public int getHP()
+	public int getHp()
 	{
 		return _hp;
 	}
@@ -90,14 +73,24 @@ public class FishData
 		return _type;
 	}
 	
+	public int getType(boolean isLureNight)
+	{
+		if (!GameTimeController.getInstance().isNowNight() && isLureNight)
+		{
+			return -1;
+		}
+		
+		return _type;
+	}
+	
 	public int getGroup()
 	{
 		return _group;
 	}
 	
-	public int getFishGuts()
+	public int getGuts()
 	{
-		return _fishGuts;
+		return _guts;
 	}
 	
 	public int getGutsCheckTime()
@@ -113,10 +106,5 @@ public class FishData
 	public int getCombatTime()
 	{
 		return _combatTime;
-	}
-	
-	public void setType(int type)
-	{
-		_type = type;
 	}
 }
