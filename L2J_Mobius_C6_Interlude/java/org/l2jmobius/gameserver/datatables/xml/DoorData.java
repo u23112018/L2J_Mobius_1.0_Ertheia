@@ -14,21 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.l2jmobius.gameserver.datatables.csv;
+package org.l2jmobius.gameserver.datatables.xml;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.LineNumberReader;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
-import org.l2jmobius.Config;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
+import org.l2jmobius.commons.util.IXmlReader;
+import org.l2jmobius.gameserver.datatables.csv.MapRegionTable;
 import org.l2jmobius.gameserver.idfactory.IdFactory;
 import org.l2jmobius.gameserver.instancemanager.ClanHallManager;
 import org.l2jmobius.gameserver.model.Location;
@@ -37,56 +36,46 @@ import org.l2jmobius.gameserver.model.actor.instance.DoorInstance;
 import org.l2jmobius.gameserver.model.actor.templates.CreatureTemplate;
 import org.l2jmobius.gameserver.model.entity.ClanHall;
 
-public class DoorTable
+/**
+ * @author Mobius
+ */
+public class DoorData implements IXmlReader
 {
-	private static final Logger LOGGER = Logger.getLogger(DoorTable.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(DoorData.class.getName());
 	
-	private final Map<Integer, DoorInstance> _doors = new HashMap<>();
+	private static final Map<Integer, DoorInstance> DOORS = new HashMap<>();
 	
-	private static DoorTable _instance;
-	
-	public static DoorTable getInstance()
-	{
-		if (_instance == null)
-		{
-			_instance = new DoorTable();
-		}
-		
-		return _instance;
-	}
-	
-	public DoorTable()
-	{
-		_doors.clear();
-		// load();
-	}
-	
+	@Override
 	public void load()
 	{
-		FileReader reader = null;
-		BufferedReader buff = null;
-		LineNumberReader lnr = null;
-		
+		parseDatapackFile("data/Doors.xml");
+		LOGGER.info("DoorData: Loaded " + DOORS.size() + " doors.");
+	}
+	
+	@Override
+	public void parseDocument(Document doc, File f)
+	{
 		try
 		{
-			final File doorData = new File(Config.DATAPACK_ROOT, "data/csv/door.csv");
+			final StatsSet set = new StatsSet();
 			
-			reader = new FileReader(doorData);
-			buff = new BufferedReader(reader);
-			lnr = new LineNumberReader(buff);
-			
-			String line = null;
-			LOGGER.info("Searching clan halls doors:");
-			
-			while ((line = lnr.readLine()) != null)
+			final Node n = doc.getFirstChild();
+			for (Node node = n.getFirstChild(); node != null; node = node.getNextSibling())
 			{
-				if ((line.trim().length() == 0) || line.startsWith("#"))
+				if (!"door".equalsIgnoreCase(node.getNodeName()))
 				{
 					continue;
 				}
 				
-				final DoorInstance door = parseList(line);
-				_doors.put(door.getDoorId(), door);
+				final NamedNodeMap attrs = node.getAttributes();
+				for (int i = 0; i < attrs.getLength(); i++)
+				{
+					final Node attr = attrs.item(i);
+					set.set(attr.getNodeName(), attr.getNodeValue());
+				}
+				
+				final DoorInstance door = parseList(set);
+				DOORS.put(door.getDoorId(), door);
 				door.spawnMe(door.getX(), door.getY(), door.getZ());
 				final ClanHall clanhall = ClanHallManager.getInstance().getNearbyClanHall(door.getX(), door.getY(), 500);
 				if (clanhall != null)
@@ -95,115 +84,55 @@ public class DoorTable
 					door.setClanHall(clanhall);
 				}
 			}
-			
-			LOGGER.info("DoorTable: Loaded " + _doors.size() + " Door Templates.");
 		}
-		catch (FileNotFoundException e)
+		catch (Exception e)
 		{
-			_initialized = false;
-			LOGGER.warning("door.csv is missing in data csv folder");
-		}
-		catch (IOException e)
-		{
-			_initialized = false;
-			LOGGER.warning("Error while creating door table " + e);
-		}
-		finally
-		{
-			if (lnr != null)
-			{
-				try
-				{
-					lnr.close();
-				}
-				catch (Exception e1)
-				{
-					LOGGER.warning("Problem with DoorTable: " + e1.getMessage());
-				}
-			}
-			
-			if (buff != null)
-			{
-				try
-				{
-					buff.close();
-				}
-				catch (Exception e1)
-				{
-					LOGGER.warning("Problem with DoorTable: " + e1.getMessage());
-				}
-			}
-			
-			if (reader != null)
-			{
-				try
-				{
-					reader.close();
-				}
-				catch (Exception e1)
-				{
-					LOGGER.warning("Problem with DoorTable: " + e1.getMessage());
-				}
-			}
+			LOGGER.warning("DoorData: Error while reading door data: " + e);
 		}
 	}
 	
-	public static DoorInstance parseList(String line)
+	public static DoorInstance parseList(StatsSet set)
 	{
-		final StringTokenizer st = new StringTokenizer(line, ";");
+		final String name = set.getString("name");
+		final int id = set.getInt("id");
+		final int x = set.getInt("x");
+		final int y = set.getInt("y");
+		final int z = set.getInt("z");
+		final int xMin = set.getInt("xMin");
+		final int yMin = set.getInt("yMin");
+		final int zMin = set.getInt("zMin");
+		final int xMax = set.getInt("xMax");
+		final int yMax = set.getInt("yMax");
+		final int zMax = set.getInt("zMax");
+		final int hp = set.getInt("hp");
+		final int pDef = set.getInt("pDef");
+		final int mDef = set.getInt("mDef");
+		final boolean unlockable = set.getBoolean("unlockable", false);
+		final boolean autoOpen = set.getBoolean("autoOpen", false);
 		
-		final String name = st.nextToken();
-		final int id = Integer.parseInt(st.nextToken());
-		final int x = Integer.parseInt(st.nextToken());
-		final int y = Integer.parseInt(st.nextToken());
-		final int z = Integer.parseInt(st.nextToken());
-		final int rangeXMin = Integer.parseInt(st.nextToken());
-		final int rangeYMin = Integer.parseInt(st.nextToken());
-		final int rangeZMin = Integer.parseInt(st.nextToken());
-		final int rangeXMax = Integer.parseInt(st.nextToken());
-		final int rangeYMax = Integer.parseInt(st.nextToken());
-		final int rangeZMax = Integer.parseInt(st.nextToken());
-		final int hp = Integer.parseInt(st.nextToken());
-		final int pdef = Integer.parseInt(st.nextToken());
-		final int mdef = Integer.parseInt(st.nextToken());
-		
-		boolean unlockable = false;
-		
-		if (st.hasMoreTokens())
-		{
-			unlockable = Boolean.parseBoolean(st.nextToken());
-		}
-		boolean autoOpen = false;
-		
-		if (st.hasMoreTokens())
-		{
-			autoOpen = Boolean.parseBoolean(st.nextToken());
-		}
-		
-		if (rangeXMin > rangeXMax)
+		if (xMin > xMax)
 		{
 			LOGGER.warning("Error in door data, ID:" + id);
 		}
 		
-		if (rangeYMin > rangeYMax)
+		if (yMin > yMax)
 		{
 			LOGGER.warning("Error in door data, ID:" + id);
 		}
 		
-		if (rangeZMin > rangeZMax)
+		if (zMin > zMax)
 		{
 			LOGGER.warning("Error in door data, ID:" + id);
 		}
 		
 		int collisionRadius; // (max) radius for movement checks
-		
-		if ((rangeXMax - rangeXMin) > (rangeYMax - rangeYMin))
+		if ((xMax - xMin) > (yMax - yMin))
 		{
-			collisionRadius = rangeYMax - rangeYMin;
+			collisionRadius = yMax - yMin;
 		}
 		else
 		{
-			collisionRadius = rangeXMax - rangeXMin;
+			collisionRadius = xMax - xMin;
 		}
 		
 		final StatsSet npcDat = new StatsSet();
@@ -226,7 +155,7 @@ public class DoorTable
 		
 		// npcDat.set("name", "");
 		npcDat.set("collision_radius", collisionRadius);
-		npcDat.set("collision_height", rangeZMax - rangeZMin);
+		npcDat.set("collision_height", zMax - zMin);
 		npcDat.set("sex", "male");
 		npcDat.set("type", "");
 		npcDat.set("baseAtkRange", 0);
@@ -248,12 +177,12 @@ public class DoorTable
 		npcDat.set("baseHpMax", hp);
 		npcDat.set("baseHpReg", 3.e-3f);
 		npcDat.set("baseMpReg", 3.e-3f);
-		npcDat.set("basePDef", pdef);
-		npcDat.set("baseMDef", mdef);
+		npcDat.set("basePDef", pDef);
+		npcDat.set("baseMDef", mDef);
 		
 		final CreatureTemplate template = new CreatureTemplate(npcDat);
 		final DoorInstance door = new DoorInstance(IdFactory.getInstance().getNextId(), template, id, name, unlockable);
-		door.setRange(rangeXMin, rangeYMin, rangeZMin, rangeXMax, rangeYMax, rangeZMax);
+		door.setRange(xMin, yMin, zMin, xMax, yMax, zMax);
 		try
 		{
 			door.setMapRegion(MapRegionTable.getInstance().getMapRegion(x, y));
@@ -269,26 +198,19 @@ public class DoorTable
 		return door;
 	}
 	
-	public boolean isInitialized()
-	{
-		return _initialized;
-	}
-	
-	private boolean _initialized = true;
-	
 	public DoorInstance getDoor(Integer id)
 	{
-		return _doors.get(id);
+		return DOORS.get(id);
 	}
 	
 	public void putDoor(DoorInstance door)
 	{
-		_doors.put(door.getDoorId(), door);
+		DOORS.put(door.getDoorId(), door);
 	}
 	
 	public Collection<DoorInstance> getDoors()
 	{
-		return _doors.values();
+		return DOORS.values();
 	}
 	
 	/**
@@ -296,7 +218,7 @@ public class DoorTable
 	 */
 	public void checkAutoOpen()
 	{
-		for (DoorInstance doorInst : _doors.values())
+		for (DoorInstance doorInst : DOORS.values())
 		{
 			// Garden of Eva (every 7 minutes)
 			if (doorInst.getDoorName().startsWith("goe"))
@@ -333,7 +255,7 @@ public class DoorTable
 			return false;
 		}
 		
-		for (DoorInstance doorInst : _doors.values())
+		for (DoorInstance doorInst : DOORS.values())
 		{
 			if (doorInst.getMapRegion() != region)
 			{
@@ -394,5 +316,15 @@ public class DoorTable
 			}
 		}
 		return false;
+	}
+	
+	public static DoorData getInstance()
+	{
+		return SingletonHolder.INSTANCE;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final DoorData INSTANCE = new DoorData();
 	}
 }
