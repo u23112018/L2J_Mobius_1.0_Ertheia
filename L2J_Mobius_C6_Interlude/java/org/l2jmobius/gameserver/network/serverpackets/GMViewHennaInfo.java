@@ -19,53 +19,40 @@ package org.l2jmobius.gameserver.network.serverpackets;
 import org.l2jmobius.gameserver.model.actor.instance.PlayerInstance;
 import org.l2jmobius.gameserver.model.items.Henna;
 
-public class HennaInfo extends GameServerPacket
+public class GMViewHennaInfo extends GameServerPacket
 {
 	private final PlayerInstance _player;
 	private final Henna[] _hennas = new Henna[3];
 	private int _count;
 	
-	public HennaInfo(PlayerInstance player)
+	public GMViewHennaInfo(PlayerInstance player)
 	{
 		_player = player;
 		_count = 0;
 		
 		for (int i = 0; i < 3; i++)
 		{
-			Henna henna = _player.getHenna(i + 1);
-			if (henna != null)
+			final Henna h = _player.getHenna(i + 1);
+			if (h != null)
 			{
-				_hennas[_count++] = henna;
+				_hennas[_count++] = h;
 			}
 		}
 	}
 	
 	@Override
-	protected final void writeImpl()
+	protected void writeImpl()
 	{
-		writeC(0xe4);
+		writeC(0xea);
 		
-		writeC(_player.getHennaStatINT()); // equip INT
-		writeC(_player.getHennaStatSTR()); // equip STR
-		writeC(_player.getHennaStatCON()); // equip CON
-		writeC(_player.getHennaStatMEN()); // equip MEM
-		writeC(_player.getHennaStatDEX()); // equip DEX
-		writeC(_player.getHennaStatWIT()); // equip WIT
+		writeC(_player.getHennaStatINT());
+		writeC(_player.getHennaStatSTR());
+		writeC(_player.getHennaStatCON());
+		writeC(_player.getHennaStatMEN());
+		writeC(_player.getHennaStatDEX());
+		writeC(_player.getHennaStatWIT());
 		
-		// Henna slots
-		int classId = _player.getClassId().level();
-		if (classId == 1)
-		{
-			writeD(2);
-		}
-		else if (classId > 1)
-		{
-			writeD(3);
-		}
-		else
-		{
-			writeD(0);
-		}
+		writeD(3); // slots?
 		
 		writeD(_count); // size
 		for (int i = 0; i < _count; i++)

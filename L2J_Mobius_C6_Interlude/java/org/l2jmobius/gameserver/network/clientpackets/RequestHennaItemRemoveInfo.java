@@ -18,17 +18,17 @@ package org.l2jmobius.gameserver.network.clientpackets;
 
 import org.l2jmobius.gameserver.datatables.xml.HennaData;
 import org.l2jmobius.gameserver.model.actor.instance.PlayerInstance;
-import org.l2jmobius.gameserver.network.serverpackets.HennaEquipList;
+import org.l2jmobius.gameserver.model.items.Henna;
+import org.l2jmobius.gameserver.network.serverpackets.HennaItemRemoveInfo;
 
-public class RequestHennaList extends GameClientPacket
+public final class RequestHennaItemRemoveInfo extends GameClientPacket
 {
-	@SuppressWarnings("unused")
-	private int _unknown;
+	private int _symbolId;
 	
 	@Override
 	protected void readImpl()
 	{
-		_unknown = readD(); // ??
+		_symbolId = readD();
 	}
 	
 	@Override
@@ -40,6 +40,12 @@ public class RequestHennaList extends GameClientPacket
 			return;
 		}
 		
-		player.sendPacket(new HennaEquipList(player, HennaData.getInstance().getAvailableHennasFor(player)));
+		final Henna template = HennaData.getInstance().getHenna(_symbolId);
+		if (template == null)
+		{
+			return;
+		}
+		
+		player.sendPacket(new HennaItemRemoveInfo(template, player));
 	}
 }

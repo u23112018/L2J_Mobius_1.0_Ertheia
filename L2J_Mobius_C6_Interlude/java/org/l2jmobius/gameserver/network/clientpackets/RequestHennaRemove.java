@@ -16,19 +16,21 @@
  */
 package org.l2jmobius.gameserver.network.clientpackets;
 
-import org.l2jmobius.gameserver.datatables.xml.HennaData;
 import org.l2jmobius.gameserver.model.actor.instance.PlayerInstance;
-import org.l2jmobius.gameserver.network.serverpackets.HennaEquipList;
+import org.l2jmobius.gameserver.model.items.Henna;
+import org.l2jmobius.gameserver.network.SystemMessageId;
 
-public class RequestHennaList extends GameClientPacket
+/**
+ * format cd
+ */
+public final class RequestHennaRemove extends GameClientPacket
 {
-	@SuppressWarnings("unused")
-	private int _unknown;
+	private int _symbolId;
 	
 	@Override
 	protected void readImpl()
 	{
-		_unknown = readD(); // ??
+		_symbolId = readD();
 	}
 	
 	@Override
@@ -40,6 +42,18 @@ public class RequestHennaList extends GameClientPacket
 			return;
 		}
 		
-		player.sendPacket(new HennaEquipList(player, HennaData.getInstance().getAvailableHennasFor(player)));
+		for (int i = 1; i <= 3; i++)
+		{
+			final Henna henna = player.getHenna(i);
+			if ((henna != null) && (henna.getSymbolId() == _symbolId))
+			{
+				if (player.getAdena() >= (henna.getPrice() / 5))
+				{
+					player.removeHenna(i);
+					break;
+				}
+				player.sendPacket(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
+			}
+		}
 	}
 }

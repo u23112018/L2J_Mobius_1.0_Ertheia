@@ -16,11 +16,13 @@
  */
 package org.l2jmobius.gameserver.network.clientpackets;
 
-import org.l2jmobius.gameserver.datatables.xml.HennaData;
 import org.l2jmobius.gameserver.model.actor.instance.PlayerInstance;
-import org.l2jmobius.gameserver.network.serverpackets.HennaEquipList;
+import org.l2jmobius.gameserver.network.serverpackets.HennaRemoveList;
 
-public class RequestHennaList extends GameClientPacket
+/**
+ * @author Tempy
+ */
+public final class RequestHennaRemoveList extends GameClientPacket
 {
 	@SuppressWarnings("unused")
 	private int _unknown;
@@ -40,6 +42,6 @@ public class RequestHennaList extends GameClientPacket
 			return;
 		}
 		
-		player.sendPacket(new HennaEquipList(player, HennaData.getInstance().getAvailableHennasFor(player)));
+		player.sendPacket(new HennaRemoveList(player));
 	}
 }
