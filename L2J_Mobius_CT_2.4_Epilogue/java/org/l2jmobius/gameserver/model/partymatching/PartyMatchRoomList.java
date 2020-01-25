@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.l2jmobius.gameserver.model;
+package org.l2jmobius.gameserver.model.partymatching;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.l2jmobius.gameserver.model.actor.instance.PlayerInstance;
 import org.l2jmobius.gameserver.network.SystemMessageId;
@@ -31,9 +31,9 @@ public class PartyMatchRoomList
 	private int _maxid = 1;
 	private final Map<Integer, PartyMatchRoom> _rooms;
 	
-	private PartyMatchRoomList()
+	protected PartyMatchRoomList()
 	{
-		_rooms = new HashMap<>();
+		_rooms = new ConcurrentHashMap<>();
 	}
 	
 	public synchronized void addPartyMatchRoom(int id, PartyMatchRoom room)
@@ -52,9 +52,10 @@ public class PartyMatchRoomList
 			}
 			
 			_member.sendPacket(new ExClosePartyRoom());
-			_member.sendPacket(SystemMessageId.PARTY_ROOM_DISBANDED);
+			_member.sendPacket(SystemMessageId.THE_PARTY_ROOM_HAS_BEEN_DISBANDED);
 			
 			_member.setPartyRoom(0);
+			// _member.setPartyMatching(0);
 			_member.broadcastUserInfo();
 		}
 		_rooms.remove(id);
@@ -92,7 +93,6 @@ public class PartyMatchRoomList
 				}
 			}
 		}
-		
 		return null;
 	}
 	
@@ -108,7 +108,6 @@ public class PartyMatchRoomList
 				}
 			}
 		}
-		
 		return -1;
 	}
 	

@@ -14,32 +14,53 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.l2jmobius.gameserver.network.clientpackets;
+package org.l2jmobius.gameserver.model.partymatching;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.l2jmobius.gameserver.model.actor.instance.PlayerInstance;
-import org.l2jmobius.gameserver.model.partymatching.PartyMatchWaitingList;
 
 /**
- * Format: (ch) this is just a trigger : no data
- * @author -Wooden-
+ * @author Gnacik
  */
-public class RequestExitPartyMatchingWaitingRoom extends GameClientPacket
+public class PartyMatchWaitingList
 {
-	@Override
-	protected void readImpl()
+	private final List<PlayerInstance> _members;
+	
+	private PartyMatchWaitingList()
 	{
-		// trigger
+		_members = new ArrayList<>();
 	}
 	
-	@Override
-	protected void runImpl()
+	public void addPlayer(PlayerInstance player)
 	{
-		final PlayerInstance player = getClient().getPlayer();
-		if (player == null)
+		if (!_members.contains(player))
 		{
-			return;
+			_members.add(player);
 		}
-		
-		PartyMatchWaitingList.getInstance().removePlayer(player);
+	}
+	
+	public void removePlayer(PlayerInstance player)
+	{
+		if (_members.contains(player))
+		{
+			_members.remove(player);
+		}
+	}
+	
+	public List<PlayerInstance> getPlayers()
+	{
+		return _members;
+	}
+	
+	public static PartyMatchWaitingList getInstance()
+	{
+		return SingletonHolder.INSTANCE;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final PartyMatchWaitingList INSTANCE = new PartyMatchWaitingList();
 	}
 }

@@ -14,13 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.l2jmobius.gameserver.model;
+package org.l2jmobius.gameserver.model.partymatching;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.l2jmobius.gameserver.instancemanager.TownManager;
+import org.l2jmobius.gameserver.instancemanager.MapRegionManager;
 import org.l2jmobius.gameserver.model.actor.instance.PlayerInstance;
+import org.l2jmobius.gameserver.model.interfaces.IIdentifiable;
 import org.l2jmobius.gameserver.network.SystemMessageId;
 import org.l2jmobius.gameserver.network.serverpackets.ExManagePartyRoomMember;
 import org.l2jmobius.gameserver.network.serverpackets.SystemMessage;
@@ -28,12 +29,11 @@ import org.l2jmobius.gameserver.network.serverpackets.SystemMessage;
 /**
  * @author Gnacik
  */
-public class PartyMatchRoom
+public class PartyMatchRoom implements IIdentifiable
 {
 	private final int _id;
 	private String _title;
 	private int _loot;
-	private int _location;
 	private int _minlvl;
 	private int _maxlvl;
 	private int _maxmem;
@@ -44,7 +44,6 @@ public class PartyMatchRoom
 		_id = id;
 		_title = title;
 		_loot = loot;
-		_location = TownManager.getClosestLocation(owner);
 		_minlvl = minlvl;
 		_maxlvl = maxlvl;
 		_maxmem = maxmem;
@@ -63,7 +62,7 @@ public class PartyMatchRoom
 	
 	public void deleteMember(PlayerInstance player)
 	{
-		if (player != _members.get(0)) // owner
+		if (player != getOwner())
 		{
 			_members.remove(player);
 			notifyMembersAboutExit(player);
@@ -83,7 +82,7 @@ public class PartyMatchRoom
 	{
 		for (PlayerInstance _member : _members)
 		{
-			final SystemMessage sm = new SystemMessage(SystemMessageId.S1_LEFT_PARTY_ROOM);
+			final SystemMessage sm = new SystemMessage(SystemMessageId.C1_HAS_LEFT_THE_PARTY_ROOM);
 			sm.addString(player.getName());
 			_member.sendPacket(sm);
 			_member.sendPacket(new ExManagePartyRoomMember(player, this, 2));
@@ -95,49 +94,24 @@ public class PartyMatchRoom
 		// Get current leader
 		final PlayerInstance oldLeader = _members.get(0);
 		// Remove new leader
-		if (_members.contains(newLeader))
-		{
-			_members.remove(newLeader);
-		}
-		
+		_members.remove(newLeader);
 		// Move him to first position
-		if (!_members.isEmpty())
-		{
-			_members.set(0, newLeader);
-		}
-		else
-		{
-			_members.add(newLeader);
-		}
-		
+		_members.set(0, newLeader);
 		// Add old leader as normal member
-		if ((oldLeader != null) && (oldLeader != newLeader))
-		{
-			_members.add(oldLeader);
-		}
-		
+		_members.add(oldLeader);
 		// Broadcast change
 		for (PlayerInstance member : _members)
 		{
 			member.sendPacket(new ExManagePartyRoomMember(newLeader, this, 1));
 			member.sendPacket(new ExManagePartyRoomMember(oldLeader, this, 1));
-			member.sendPacket(SystemMessageId.PARTY_ROOM_LEADER_CHANGED);
+			member.sendPacket(SystemMessageId.THE_LEADER_OF_THE_PARTY_ROOM_HAS_CHANGED);
 		}
 	}
 	
+	@Override
 	public int getId()
 	{
 		return _id;
-	}
-	
-	public PlayerInstance getOwner()
-	{
-		return _members.get(0);
-	}
-	
-	public int getMembers()
-	{
-		return _members.size();
 	}
 	
 	public int getLootType()
@@ -145,19 +119,9 @@ public class PartyMatchRoom
 		return _loot;
 	}
 	
-	public void setLootType(int loot)
-	{
-		_loot = loot;
-	}
-	
 	public int getMinLvl()
 	{
 		return _minlvl;
-	}
-	
-	public void setMinLvl(int minlvl)
-	{
-		_minlvl = minlvl;
 	}
 	
 	public int getMaxLvl()
@@ -165,19 +129,34 @@ public class PartyMatchRoom
 		return _maxlvl;
 	}
 	
-	public void setMaxLvl(int maxlvl)
-	{
-		_maxlvl = maxlvl;
-	}
-	
+	/**
+	 * <ul>
+	 * <li>1 : Talking Island</li>
+	 * <li>2 : Gludio</li>
+	 * <li>3 : Dark Elven Ter.</li>
+	 * <li>4 : Elven Territory</li>
+	 * <li>5 : Dion</li>
+	 * <li>6 : Giran</li>
+	 * <li>7 : Neutral Zone</li>
+	 * <li>8 : Lyonn</li>
+	 * <li>9 : Schuttgart</li>
+	 * <li>10 : Oren</li>
+	 * <li>11 : Hunters Village</li>
+	 * <li>12 : Innadril</li>
+	 * <li>13 : Aden</li>
+	 * <li>14 : Rune</li>
+	 * <li>15 : Goddard</li>
+	 * </ul>
+	 * @return the id
+	 */
 	public int getLocation()
 	{
-		return _location;
+		return MapRegionManager.getInstance().getMapRegion(_members.get(0)).getBbs();
 	}
 	
-	public void setLocation(int loc)
+	public int getMembers()
 	{
-		_location = loc;
+		return _members.size();
 	}
 	
 	public int getMaxMembers()
@@ -185,14 +164,36 @@ public class PartyMatchRoom
 		return _maxmem;
 	}
 	
-	public void setMaxMembers(int maxmem)
-	{
-		_maxmem = maxmem;
-	}
-	
 	public String getTitle()
 	{
 		return _title;
+	}
+	
+	public PlayerInstance getOwner()
+	{
+		return _members.get(0);
+	}
+	
+	/* SET */
+	
+	public void setMinLvl(int minlvl)
+	{
+		_minlvl = minlvl;
+	}
+	
+	public void setMaxLvl(int maxlvl)
+	{
+		_maxlvl = maxlvl;
+	}
+	
+	public void setLootType(int loot)
+	{
+		_loot = loot;
+	}
+	
+	public void setMaxMembers(int maxmem)
+	{
+		_maxmem = maxmem;
 	}
 	
 	public void setTitle(String title)

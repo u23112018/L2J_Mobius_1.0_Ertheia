@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.l2jmobius.gameserver.model;
+package org.l2jmobius.gameserver.model.partymatching;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.l2jmobius.gameserver.model.actor.instance.PlayerInstance;
 
@@ -26,15 +26,16 @@ import org.l2jmobius.gameserver.model.actor.instance.PlayerInstance;
  */
 public class PartyMatchWaitingList
 {
-	private final List<PlayerInstance> _members;
+	private final Collection<PlayerInstance> _members;
 	
-	private PartyMatchWaitingList()
+	protected PartyMatchWaitingList()
 	{
-		_members = new ArrayList<>();
+		_members = ConcurrentHashMap.newKeySet();
 	}
 	
 	public void addPlayer(PlayerInstance player)
 	{
+		// player.setPartyWait(1);
 		if (!_members.contains(player))
 		{
 			_members.add(player);
@@ -43,13 +44,14 @@ public class PartyMatchWaitingList
 	
 	public void removePlayer(PlayerInstance player)
 	{
+		// player.setPartyWait(0);
 		if (_members.contains(player))
 		{
 			_members.remove(player);
 		}
 	}
 	
-	public List<PlayerInstance> getPlayers()
+	public Collection<PlayerInstance> getPlayers()
 	{
 		return _members;
 	}
