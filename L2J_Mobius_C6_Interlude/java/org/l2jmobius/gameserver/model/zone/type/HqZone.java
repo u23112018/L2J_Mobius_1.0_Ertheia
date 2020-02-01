@@ -22,41 +22,41 @@ import org.l2jmobius.gameserver.model.zone.ZoneId;
 import org.l2jmobius.gameserver.model.zone.ZoneType;
 
 /**
- * Zone where 'Build Headquarters' is not allowed.
- * @author Gnat
+ * The only zone where 'Build Headquarters' is allowed.
+ * @author Tryskell, reverted version of Gnat's NoHqZone
  */
-public class NoHqZone extends ZoneType
+public class HqZone extends ZoneType
 {
-	public NoHqZone(int id)
+	public HqZone(final int id)
 	{
 		super(id);
 	}
 	
 	@Override
-	protected void onEnter(Creature creature)
+	protected void onEnter(final Creature character)
 	{
-		if (creature instanceof PlayerInstance)
+		if (character instanceof PlayerInstance)
 		{
-			creature.setInsideZone(ZoneId.NO_HQ, true);
+			character.setInsideZone(ZoneId.HQ, true);
 		}
 	}
 	
 	@Override
-	protected void onExit(Creature creature)
+	protected void onExit(final Creature character)
 	{
-		if (creature instanceof PlayerInstance)
+		if (character instanceof PlayerInstance)
 		{
-			creature.setInsideZone(ZoneId.NO_HQ, false);
+			character.setInsideZone(ZoneId.HQ, false);
 		}
 	}
 	
 	@Override
-	public void onDieInside(Creature creature)
+	public void onDieInside(final Creature character)
 	{
 	}
 	
 	@Override
-	public void onReviveInside(Creature creature)
+	public void onReviveInside(final Creature character)
 	{
 	}
 }
