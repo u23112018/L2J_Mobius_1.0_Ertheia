@@ -315,6 +315,7 @@ public class PlayerInstance extends Playable
 	public String _originalTitleAway;
 	private boolean _isAio = false;
 	private long _aioEndTime = 0;
+	private boolean _expGain = true;
 	
 	public int eventX;
 	public int eventY;
@@ -15939,6 +15940,16 @@ public class PlayerInstance extends Playable
 	public long getAioEndTime()
 	{
 		return _aioEndTime;
+	}
+	
+	public void setExpGain(boolean value)
+	{
+		_expGain = value;
+	}
+	
+	public boolean isExpGainEnabled()
+	{
+		return _expGain;
 	}
 	
 	/**
