@@ -186,7 +186,7 @@ public class ScrollOfEscape implements IItemHandler
 		final WorldObject oldtarget = player.getTarget();
 		player.setTarget(player);
 		
-		final Skill skill = SkillTable.getInstance().getInfo(escapeSkill, 1);
+		final Skill skill = SkillTable.getInstance().getSkill(escapeSkill, 1);
 		player.broadcastPacket(new MagicSkillUse(player, escapeSkill, 1, skill.getHitTime(), 0));
 		player.setTarget(oldtarget);
 		player.sendPacket(new SetupGauge(0, skill.getHitTime()));

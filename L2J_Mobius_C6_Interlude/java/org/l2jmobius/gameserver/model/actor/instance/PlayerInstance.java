@@ -2244,7 +2244,7 @@ public class PlayerInstance extends Playable
 					_curWeightPenalty = newWeightPenalty;
 					if (newWeightPenalty > 0)
 					{
-						super.addSkill(SkillTable.getInstance().getInfo(4270, newWeightPenalty));
+						super.addSkill(SkillTable.getInstance().getSkill(4270, newWeightPenalty));
 						sendSkillList(); // Fix visual bug
 					}
 					else
@@ -2348,7 +2348,7 @@ public class PlayerInstance extends Playable
 			final int penalties = _masteryWeapPenalty + _expertisePenalty + newMasteryPenalty;
 			if (penalties > 0)
 			{
-				super.addSkill(SkillTable.getInstance().getInfo(4267, 1)); // level used to be newPenalty
+				super.addSkill(SkillTable.getInstance().getSkill(4267, 1)); // level used to be newPenalty
 			}
 			else
 			{
@@ -2538,7 +2538,7 @@ public class PlayerInstance extends Playable
 			final int penalties = _masteryPenalty + _expertisePenalty + newMasteryPenalty;
 			if (penalties > 0)
 			{
-				super.addSkill(SkillTable.getInstance().getInfo(4267, 1)); // level used to be newPenalty
+				super.addSkill(SkillTable.getInstance().getSkill(4267, 1)); // level used to be newPenalty
 			}
 			else
 			{
@@ -2609,7 +2609,7 @@ public class PlayerInstance extends Playable
 			_expertisePenalty = intensity;
 			if (penalties > 0)
 			{
-				super.addSkill(SkillTable.getInstance().getInfo(4267, intensity));
+				super.addSkill(SkillTable.getInstance().getSkill(4267, intensity));
 				sendSkillList();
 			}
 			else
@@ -2736,7 +2736,7 @@ public class PlayerInstance extends Playable
 		{
 			getSubClasses().get(_classIndex).setClassId(id);
 		}
-		doCast(SkillTable.getInstance().getInfo(5103, 1));
+		doCast(SkillTable.getInstance().getSkill(5103, 1));
 		setClassTemplate(id);
 	}
 	
@@ -2873,7 +2873,7 @@ public class PlayerInstance extends Playable
 		// Remove beginner Lucky skill
 		if (lvl == 10)
 		{
-			removeSkill(SkillTable.getInstance().getInfo(194, 1));
+			removeSkill(SkillTable.getInstance().getSkill(194, 1));
 		}
 		
 		// Calculate the current higher Expertise of the PlayerInstance
@@ -2888,21 +2888,21 @@ public class PlayerInstance extends Playable
 		// Add the Expertise skill corresponding to its Expertise level
 		if (getExpertiseIndex() > 0)
 		{
-			final Skill skill = SkillTable.getInstance().getInfo(239, getExpertiseIndex());
+			final Skill skill = SkillTable.getInstance().getSkill(239, getExpertiseIndex());
 			addSkill(skill, !restore);
 		}
 		
 		// Active skill dwarven craft
 		if ((getSkillLevel(1321) < 1) && (getRace() == Race.DWARF))
 		{
-			final Skill skill = SkillTable.getInstance().getInfo(1321, 1);
+			final Skill skill = SkillTable.getInstance().getSkill(1321, 1);
 			addSkill(skill, !restore);
 		}
 		
 		// Active skill common craft
 		if (getSkillLevel(1322) < 1)
 		{
-			final Skill skill = SkillTable.getInstance().getInfo(1322, 1);
+			final Skill skill = SkillTable.getInstance().getSkill(1322, 1);
 			addSkill(skill, !restore);
 		}
 		
@@ -2910,7 +2910,7 @@ public class PlayerInstance extends Playable
 		{
 			if ((lvl >= COMMON_CRAFT_LEVELS[i]) && (getSkillLevel(1320) < (i + 1)))
 			{
-				final Skill skill = SkillTable.getInstance().getInfo(1320, (i + 1));
+				final Skill skill = SkillTable.getInstance().getSkill(1320, (i + 1));
 				addSkill(skill, !restore);
 			}
 		}
@@ -9294,7 +9294,7 @@ public class PlayerInstance extends Playable
 					}
 					
 					// Create a Skill object for each record
-					final Skill skill = SkillTable.getInstance().getInfo(id, level);
+					final Skill skill = SkillTable.getInstance().getSkill(id, level);
 					
 					// Add the Skill object to the Creature _skills and its Func objects to the calculator set of the Creature
 					super.addSkill(skill);
@@ -9320,7 +9320,7 @@ public class PlayerInstance extends Playable
 					}
 					
 					// Create a Skill object for each record
-					final Skill skill = SkillTable.getInstance().getInfo(id, level);
+					final Skill skill = SkillTable.getInstance().getSkill(id, level);
 					
 					// Add the Skill object to the Creature _skills and its Func objects to the calculator set of the Creature
 					super.addSkill(skill);
@@ -9377,7 +9377,7 @@ public class PlayerInstance extends Playable
 				
 				if (activateEffects)
 				{
-					final Skill skill = SkillTable.getInstance().getInfo(skillId, skillLvl);
+					final Skill skill = SkillTable.getInstance().getSkill(skillId, skillLvl);
 					skill.getEffects(this, this, false, false, false);
 					for (Effect effect : getAllEffects())
 					{
@@ -9392,7 +9392,7 @@ public class PlayerInstance extends Playable
 				final long remainingTime = systime - currentTime;
 				if (remainingTime > 10)
 				{
-					final Skill skill = SkillTable.getInstance().getInfo(skillId, skillLvl);
+					final Skill skill = SkillTable.getInstance().getSkill(skillId, skillLvl);
 					if (skill == null)
 					{
 						continue;
@@ -9421,7 +9421,7 @@ public class PlayerInstance extends Playable
 				final long remainingTime = systime - currentTime;
 				if (remainingTime > 0)
 				{
-					final Skill skill = SkillTable.getInstance().getInfo(skillId, skillLvl);
+					final Skill skill = SkillTable.getInstance().getSkill(skillId, skillLvl);
 					if (skill == null)
 					{
 						continue;
@@ -10733,7 +10733,7 @@ public class PlayerInstance extends Playable
 				setRiding(true);
 				if (isNoble())
 				{
-					final Skill striderAssaultSkill = SkillTable.getInstance().getInfo(325, 1);
+					final Skill striderAssaultSkill = SkillTable.getInstance().getSkill(325, 1);
 					addSkill(striderAssaultSkill, false); // not saved to DB
 				}
 				break;
@@ -12276,7 +12276,7 @@ public class PlayerInstance extends Playable
 				if (skillInfo.getMinLevel() <= 40)
 				{
 					final Skill prevSkill = prevSkillList.get(skillInfo.getId());
-					final Skill newSkill = SkillTable.getInstance().getInfo(skillInfo.getId(), skillInfo.getLevel());
+					final Skill newSkill = SkillTable.getInstance().getSkill(skillInfo.getId(), skillInfo.getLevel());
 					if ((newSkill == null) || ((prevSkill != null) && (prevSkill.getLevel() > newSkill.getLevel())))
 					{
 						continue;
@@ -14942,7 +14942,7 @@ public class PlayerInstance extends Playable
 		
 		if (getDeathPenaltyBuffLevel() != 0)
 		{
-			final Skill skill = SkillTable.getInstance().getInfo(5076, getDeathPenaltyBuffLevel());
+			final Skill skill = SkillTable.getInstance().getSkill(5076, getDeathPenaltyBuffLevel());
 			if (skill != null)
 			{
 				removeSkill(skill, true);
@@ -14951,7 +14951,7 @@ public class PlayerInstance extends Playable
 		
 		_deathPenaltyBuffLevel++;
 		
-		addSkill(SkillTable.getInstance().getInfo(5076, getDeathPenaltyBuffLevel()), false);
+		addSkill(SkillTable.getInstance().getSkill(5076, getDeathPenaltyBuffLevel()), false);
 		sendPacket(new EtcStatusUpdate(this));
 		final SystemMessage sm = new SystemMessage(SystemMessageId.YOUR_DEATH_PENALTY_IS_NOW_LEVEL_S1);
 		sm.addNumber(getDeathPenaltyBuffLevel());
@@ -14969,7 +14969,7 @@ public class PlayerInstance extends Playable
 			return;
 		}
 		
-		final Skill skill = SkillTable.getInstance().getInfo(5076, getDeathPenaltyBuffLevel());
+		final Skill skill = SkillTable.getInstance().getSkill(5076, getDeathPenaltyBuffLevel());
 		if (skill != null)
 		{
 			removeSkill(skill, true);
@@ -14980,7 +14980,7 @@ public class PlayerInstance extends Playable
 		
 		if (getDeathPenaltyBuffLevel() > 0)
 		{
-			addSkill(SkillTable.getInstance().getInfo(5076, getDeathPenaltyBuffLevel()), false);
+			addSkill(SkillTable.getInstance().getSkill(5076, getDeathPenaltyBuffLevel()), false);
 			sendPacket(new EtcStatusUpdate(this));
 			final SystemMessage sm = new SystemMessage(SystemMessageId.YOUR_DEATH_PENALTY_IS_NOW_LEVEL_S1);
 			sm.addNumber(getDeathPenaltyBuffLevel());
@@ -15023,7 +15023,7 @@ public class PlayerInstance extends Playable
 	 */
 	public void restoreDeathPenaltyBuffLevel()
 	{
-		final Skill skill = SkillTable.getInstance().getInfo(5076, getDeathPenaltyBuffLevel());
+		final Skill skill = SkillTable.getInstance().getSkill(5076, getDeathPenaltyBuffLevel());
 		if (skill != null)
 		{
 			removeSkill(skill, true);
@@ -15031,7 +15031,7 @@ public class PlayerInstance extends Playable
 		
 		if (getDeathPenaltyBuffLevel() > 0)
 		{
-			addSkill(SkillTable.getInstance().getInfo(5076, getDeathPenaltyBuffLevel()), false);
+			addSkill(SkillTable.getInstance().getSkill(5076, getDeathPenaltyBuffLevel()), false);
 			final SystemMessage sm = new SystemMessage(SystemMessageId.YOUR_DEATH_PENALTY_IS_NOW_LEVEL_S1);
 			sm.addNumber(getDeathPenaltyBuffLevel());
 			sendPacket(sm);
@@ -15260,7 +15260,7 @@ public class PlayerInstance extends Playable
 		setMountType(0);
 		if (wasFlying)
 		{
-			removeSkill(SkillTable.getInstance().getInfo(4289, 1));
+			removeSkill(SkillTable.getInstance().getSkill(4289, 1));
 		}
 		broadcastPacket(new Ride(getObjectId(), Ride.ACTION_DISMOUNT, 0));
 		setMountObjectID(0);
@@ -15781,7 +15781,7 @@ public class PlayerInstance extends Playable
 		for (Integer skillid : Config.AIO_SKILLS.keySet())
 		{
 			final int skilllvl = Config.AIO_SKILLS.get(skillid);
-			skill = SkillTable.getInstance().getInfo(skillid, skilllvl);
+			skill = SkillTable.getInstance().getSkill(skillid, skilllvl);
 			if (skill != null)
 			{
 				addSkill(skill, true);
@@ -15799,7 +15799,7 @@ public class PlayerInstance extends Playable
 		for (Integer skillid : Config.AIO_SKILLS.keySet())
 		{
 			final int skilllvl = Config.AIO_SKILLS.get(skillid);
-			skill = SkillTable.getInstance().getInfo(skillid, skilllvl);
+			skill = SkillTable.getInstance().getSkill(skillid, skilllvl);
 			removeSkill(skill);
 		}
 	}
