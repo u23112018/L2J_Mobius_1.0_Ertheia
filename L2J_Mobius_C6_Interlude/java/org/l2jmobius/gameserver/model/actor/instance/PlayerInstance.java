@@ -1572,28 +1572,23 @@ public class PlayerInstance extends Playable
 	/**
 	 * Process quest event.
 	 * @param quest the quest
-	 * @param event the event
+	 * @param eventValue the event
 	 * @return the quest state
 	 */
-	public QuestState processQuestEvent(String quest, String event)
+	public QuestState processQuestEvent(String quest, String eventValue)
 	{
 		QuestState retval = null;
+		String event = eventValue;
 		if (event == null)
 		{
 			event = "";
 		}
-		
-		if (!_quests.containsKey(quest))
+		if (event.length() == 0)
 		{
 			return retval;
 		}
 		
 		QuestState qs = getQuestState(quest);
-		if ((qs == null) && (event.length() == 0))
-		{
-			return retval;
-		}
-		
 		if (qs == null)
 		{
 			Quest q = null;
@@ -1608,9 +1603,10 @@ public class PlayerInstance extends Playable
 			}
 			qs = q.newQuestState(this);
 		}
-		if ((qs != null) && (getLastQuestNpcObject() > 0))
+		
+		if ((qs != null) && (_questNpcObject > 0))
 		{
-			final WorldObject object = World.getInstance().findObject(getLastQuestNpcObject());
+			final WorldObject object = World.getInstance().findObject(_questNpcObject);
 			if ((object instanceof NpcInstance) && isInsideRadius(object, NpcInstance.INTERACTION_DISTANCE, false, false))
 			{
 				final NpcInstance npc = (NpcInstance) object;
@@ -1625,7 +1621,6 @@ public class PlayerInstance extends Playable
 							{
 								showQuestWindow(quest, State.getStateName(qs.getState()));
 							}
-							
 							retval = qs;
 						}
 					}
