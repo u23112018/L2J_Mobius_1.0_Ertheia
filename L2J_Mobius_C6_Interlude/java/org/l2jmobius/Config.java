@@ -558,6 +558,8 @@ public class Config
 	public static int BANKING_SYSTEM_GOLDBARS;
 	public static int BANKING_SYSTEM_ADENA;
 	
+	public static int RESTORE_CANCELLED_BUFFS_SECONDS;
+	
 	public static int BUFFER_MAX_SCHEMES;
 	public static int BUFFER_STATIC_BUFF_COST;
 	
