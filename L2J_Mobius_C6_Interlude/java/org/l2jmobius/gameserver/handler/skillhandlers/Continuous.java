@@ -16,6 +16,8 @@
  */
 package org.l2jmobius.gameserver.handler.skillhandlers;
 
+import java.util.List;
+
 import org.l2jmobius.commons.util.Rnd;
 
 //
@@ -65,7 +67,7 @@ public class Continuous implements ISkillHandler
 	};
 	
 	@Override
-	public void useSkill(Creature creature, Skill skill2, WorldObject[] targets)
+	public void useSkill(Creature creature, Skill skillValue, List<Creature> targets)
 	{
 		if (creature == null)
 		{
@@ -78,10 +80,11 @@ public class Continuous implements ISkillHandler
 			player = (PlayerInstance) creature;
 		}
 		
-		if (skill2.getEffectId() != 0)
+		Skill usedSkill = skillValue;
+		if (usedSkill.getEffectId() != 0)
 		{
-			final int skillLevel = skill2.getEffectLvl();
-			final int skillEffectId = skill2.getEffectId();
+			final int skillLevel = usedSkill.getEffectLvl();
+			final int skillEffectId = usedSkill.getEffectId();
 			Skill skill;
 			if (skillLevel == 0)
 			{
@@ -94,11 +97,11 @@ public class Continuous implements ISkillHandler
 			
 			if (skill != null)
 			{
-				skill2 = skill;
+				usedSkill = skill;
 			}
 		}
 		
-		final Skill skill = skill2;
+		final Skill skill = usedSkill;
 		final boolean bss = creature.checkBss();
 		final boolean sps = creature.checkSps();
 		final boolean ss = creature.checkSs();

@@ -649,7 +649,7 @@ public abstract class Skill
 		_isDebuff = set.getBoolean("isDebuff", false);
 	}
 	
-	public abstract void useSkill(Creature caster, WorldObject[] targets);
+	public abstract void useSkill(Creature caster, List<Creature> targets);
 	
 	public boolean isSingleEffect()
 	{
@@ -1374,7 +1374,7 @@ public abstract class Skill
 		return true;
 	}
 	
-	public WorldObject[] getTargetList(Creature creature, boolean onlyFirst)
+	public List<Creature> getTargetList(Creature creature, boolean onlyFirst)
 	{
 		// Init to null the target of the skill
 		Creature target = null;
@@ -1406,10 +1406,10 @@ public abstract class Skill
 	 * <li>ITEM</li><br>
 	 * @param creature The Creature who use the skill
 	 * @param onlyFirst
-	 * @param target
+	 * @param targetCreature
 	 * @return
 	 */
-	public WorldObject[] getTargetList(Creature creature, boolean onlyFirst, Creature target)
+	public List<Creature> getTargetList(Creature creature, boolean onlyFirst, Creature targetCreature)
 	{
 		// to avoid attacks during oly start period
 		if ((creature instanceof PlayerInstance) && _isOffensive && (((PlayerInstance) creature).isInOlympiadMode() && !((PlayerInstance) creature).isOlympiadStart()))
@@ -1421,12 +1421,11 @@ public abstract class Skill
 		final List<Creature> targetList = new ArrayList<>();
 		if (_ispotion)
 		{
-			return new Creature[]
-			{
-				creature
-			};
+			targetList.add(creature);
+			return targetList;
 		}
 		
+		Creature target = targetCreature;
 		switch (_targetType)
 		{
 			// The skill can only be used on the Creature targeted, or on the caster itself
@@ -1528,27 +1527,21 @@ public abstract class Skill
 				}
 				
 				// If a target is found, return it in a table else send a system message TARGET_IS_INCORRECT
-				return new Creature[]
-				{
-					target
-				};
+				targetList.add(target);
+				return targetList;
 			}
 			case TARGET_SELF:
 			case TARGET_GROUND:
 			{
-				return new Creature[]
-				{
-					creature
-				};
+				targetList.add(creature);
+				return targetList;
 			}
 			case TARGET_HOLY:
 			{
 				if ((creature instanceof PlayerInstance) && (creature.getTarget() instanceof ArtefactInstance))
 				{
-					return new Creature[]
-					{
-						(ArtefactInstance) creature.getTarget()
-					};
+					targetList.add((ArtefactInstance) creature.getTarget());
+					return targetList;
 				}
 				return null;
 			}
@@ -1558,10 +1551,8 @@ public abstract class Skill
 				target = creature.getPet();
 				if ((target != null) && !target.isDead())
 				{
-					return new Creature[]
-					{
-						target
-					};
+					targetList.add(target);
+					return targetList;
 				}
 				return null;
 			}
@@ -1572,10 +1563,8 @@ public abstract class Skill
 					target = ((Summon) creature).getOwner();
 					if ((target != null) && !target.isDead())
 					{
-						return new Creature[]
-						{
-							target
-						};
+						targetList.add(target);
+						return targetList;
 					}
 				}
 				return null;
@@ -1587,10 +1576,8 @@ public abstract class Skill
 					target = creature.getPet();
 					if ((target != null) && target.isDead())
 					{
-						return new Creature[]
-						{
-							target
-						};
+						targetList.add(target);
+						return targetList;
 					}
 				}
 				return null;
@@ -1694,19 +1681,14 @@ public abstract class Skill
 					{
 						continue;
 					}
-					if (!onlyFirst)
+					
+					targetList.add(nearby);
+					if (onlyFirst)
 					{
-						targetList.add(nearby);
-					}
-					else
-					{
-						return new Creature[]
-						{
-							nearby
-						};
+						return targetList;
 					}
 				}
-				return targetList.toArray(new Creature[targetList.size()]);
+				return targetList;
 			}
 			case TARGET_AREA:
 			{
@@ -1717,27 +1699,22 @@ public abstract class Skill
 					creature.sendPacket(new SystemMessage(SystemMessageId.THAT_IS_THE_INCORRECT_TARGET));
 					return null;
 				}
+				
 				Creature cha;
 				if (_castRange >= 0)
 				{
 					cha = target;
-					if (!onlyFirst)
+					targetList.add(cha);
+					if (onlyFirst)
 					{
-						targetList.add(cha); // Add target to target list
-					}
-					else
-					{
-						return new Creature[]
-						{
-							cha
-						};
+						return targetList;
 					}
 				}
 				else
 				{
 					cha = creature;
 				}
-				final boolean effectOriginIsPlayableInstance = cha instanceof Playable;
+				
 				PlayerInstance src = null;
 				if (creature instanceof PlayerInstance)
 				{
@@ -1747,6 +1724,7 @@ public abstract class Skill
 				{
 					src = ((Summon) creature).getOwner();
 				}
+				
 				final int radius = _skillRadius;
 				final boolean srcInArena = creature.isInsideZone(ZoneId.PVP) && !creature.isInsideZone(ZoneId.SIEGE);
 				for (WorldObject obj : creature.getKnownList().getKnownObjects().values())
@@ -1767,22 +1745,24 @@ public abstract class Skill
 					{
 						continue;
 					}
+					if (_isOffensive && Creature.isInsidePeaceZone(creature, obj))
+					{
+						continue;
+					}
+					if (!GeoEngine.getInstance().canSeeTarget(creature, obj))
+					{
+						continue;
+					}
+					
 					target = (Creature) obj;
-					if (!GeoEngine.getInstance().canSeeTarget(creature, target))
-					{
-						continue;
-					}
-					if (_isOffensive && Creature.isInsidePeaceZone(creature, target))
-					{
-						continue;
-					}
 					if (!target.isAlikeDead() && (target != creature))
 					{
 						if (!Util.checkIfInRange(radius, obj, cha, true))
 						{
 							continue;
 						}
-						if (src != null) // caster is l2playableinstance and exists
+						
+						if (src != null) // caster is a playable instance and exists
 						{
 							// check for Events
 							if (obj instanceof PlayerInstance)
@@ -1813,6 +1793,13 @@ public abstract class Skill
 									continue;
 								}
 							}
+							
+							// Summon AOE skills should not target non attackable players.
+							if (obj.isPlayable() && !creature.isPlayer() && !obj.isAutoAttackable(creature))
+							{
+								continue;
+							}
+							
 							if (obj instanceof PlayerInstance)
 							{
 								final PlayerInstance trg = (PlayerInstance) obj;
@@ -1844,7 +1831,7 @@ public abstract class Skill
 									}
 								}
 							}
-							if (obj instanceof Summon)
+							else if (obj instanceof Summon)
 							{
 								final PlayerInstance trg = ((Summon) obj).getOwner();
 								if (trg == null)
@@ -1876,11 +1863,7 @@ public abstract class Skill
 								}
 							}
 						}
-						else if (effectOriginIsPlayableInstance && // If effect starts at PlayableInstance and
-							!(obj instanceof Playable))
-						{
-							continue;
-						}
+						
 						targetList.add((Creature) obj);
 					}
 				}
@@ -1888,7 +1871,7 @@ public abstract class Skill
 				{
 					return null;
 				}
-				return targetList.toArray(new Creature[targetList.size()]);
+				return targetList;
 			}
 			case TARGET_MULTIFACE:
 			{
@@ -1897,17 +1880,13 @@ public abstract class Skill
 					creature.sendPacket(new SystemMessage(SystemMessageId.THAT_IS_THE_INCORRECT_TARGET));
 					return null;
 				}
-				if (!onlyFirst)
+				
+				targetList.add(target);
+				if (onlyFirst)
 				{
-					targetList.add(target);
+					return targetList;
 				}
-				else
-				{
-					return new Creature[]
-					{
-						target
-					};
-				}
+				
 				final int radius = _skillRadius;
 				PlayerInstance src = null;
 				if (creature instanceof PlayerInstance)
@@ -1970,26 +1949,22 @@ public abstract class Skill
 						return null;
 					}
 				}
-				return targetList.toArray(new Creature[targetList.size()]);
+				return targetList;
 				// TODO multiface targets all around right now. need it to just get targets the character is facing.
 			}
 			case TARGET_PARTY:
 			{
+				targetList.add(creature);
 				if (onlyFirst)
 				{
-					return new Creature[]
-					{
-						creature
-					};
+					return targetList;
 				}
-				targetList.add(creature);
+				
 				final PlayerInstance player = creature.getActingPlayer();
 				if (player == null)
 				{
-					return new Creature[]
-					{
-						creature
-					};
+					targetList.add(creature);
+					return targetList;
 				}
 				if (creature instanceof Summon)
 				{
@@ -2059,17 +2034,15 @@ public abstract class Skill
 						}
 					}
 				}
-				return targetList.toArray(new Creature[targetList.size()]);
+				return targetList;
 			}
 			case TARGET_PARTY_MEMBER:
 			{
 				if ((target != null) && !target.isDead() && ((target == creature) || ((creature.getParty() != null) && (target.getParty() != null) && (creature.getParty().getPartyLeaderOID() == target.getParty().getPartyLeaderOID())) || (creature.getPet() == target) || (creature == target.getPet())))
 				{
 					// If a target is found, return it in a table else send a system message TARGET_IS_INCORRECT
-					return new Creature[]
-					{
-						target
-					};
+					targetList.add(target);
+					return targetList;
 				}
 				creature.sendPacket(new SystemMessage(SystemMessageId.THAT_IS_THE_INCORRECT_TARGET));
 				return null;
@@ -2079,10 +2052,8 @@ public abstract class Skill
 				if ((target != creature) && (target != null) && !target.isDead() && (creature.getParty() != null) && (target.getParty() != null) && (creature.getParty().getPartyLeaderOID() == target.getParty().getPartyLeaderOID()))
 				{
 					// If a target is found, return it in a table else send a system message TARGET_IS_INCORRECT
-					return new Creature[]
-					{
-						target
-					};
+					targetList.add(target);
+					return targetList;
 				}
 				creature.sendPacket(new SystemMessage(SystemMessageId.THAT_IS_THE_INCORRECT_TARGET));
 				return null;
@@ -2099,21 +2070,14 @@ public abstract class Skill
 					{
 						if (player.isInOlympiadMode())
 						{
-							return new Creature[]
-							{
-								player
-							};
-						}
-						if (!onlyFirst)
-						{
 							targetList.add(player);
+							return targetList;
 						}
-						else
+						
+						targetList.add(player);
+						if (onlyFirst)
 						{
-							return new Creature[]
-							{
-								player
-							};
+							return targetList;
 						}
 					}
 					PlayerInstance src = null;
@@ -2191,21 +2155,16 @@ public abstract class Skill
 							{
 								continue;
 							}
-							if (!onlyFirst)
+							
+							targetList.add((Creature) newTarget);
+							if (onlyFirst)
 							{
-								targetList.add((Creature) newTarget);
-							}
-							else
-							{
-								return new Creature[]
-								{
-									(Creature) newTarget
-								};
+								return targetList;
 							}
 						}
 					}
 				}
-				return targetList.toArray(new Creature[targetList.size()]);
+				return targetList;
 			}
 			case TARGET_CORPSE_CLAN:
 			case TARGET_CLAN:
@@ -2219,21 +2178,14 @@ public abstract class Skill
 					{
 						if (player.isInOlympiadMode())
 						{
-							return new Creature[]
-							{
-								player
-							};
-						}
-						if (!onlyFirst)
-						{
 							targetList.add(player);
+							return targetList;
 						}
-						else
+						
+						targetList.add(player);
+						if (onlyFirst)
 						{
-							return new Creature[]
-							{
-								player
-							};
+							return targetList;
 						}
 					}
 					if (clan != null)
@@ -2251,6 +2203,7 @@ public abstract class Skill
 							{
 								continue;
 							}
+							
 							final PlayerInstance trg = newTarget;
 							final PlayerInstance src = player;
 							// if src is in event and trg not OR viceversa:
@@ -2289,16 +2242,11 @@ public abstract class Skill
 							{
 								continue;
 							}
-							if (!onlyFirst)
+							
+							targetList.add(newTarget);
+							if (onlyFirst)
 							{
-								targetList.add(newTarget);
-							}
-							else
-							{
-								return new Creature[]
-								{
-									newTarget
-								};
+								return targetList;
 							}
 						}
 					}
@@ -2309,10 +2257,8 @@ public abstract class Skill
 					final NpcInstance npc = (NpcInstance) creature;
 					if ((npc.getFactionId() == null) || npc.getFactionId().isEmpty())
 					{
-						return new Creature[]
-						{
-							creature
-						};
+						targetList.add(creature);
+						return targetList;
 					}
 					targetList.add(creature);
 					final Collection<WorldObject> objs = creature.getKnownList().getKnownObjects().values();
@@ -2331,7 +2277,7 @@ public abstract class Skill
 						}
 					}
 				}
-				return targetList.toArray(new Creature[targetList.size()]);
+				return targetList;
 			}
 			case TARGET_CORPSE_PLAYER:
 			{
@@ -2389,15 +2335,8 @@ public abstract class Skill
 						}
 						if (condGood)
 						{
-							if (!onlyFirst)
-							{
-								targetList.add(target);
-								return targetList.toArray(new WorldObject[targetList.size()]);
-							}
-							return new Creature[]
-							{
-								target
-							};
+							targetList.add(target);
+							return targetList;
 						}
 					}
 				}
@@ -2411,15 +2350,9 @@ public abstract class Skill
 					creature.sendPacket(new SystemMessage(SystemMessageId.THAT_IS_THE_INCORRECT_TARGET));
 					return null;
 				}
-				if (!onlyFirst)
-				{
-					targetList.add(target);
-					return targetList.toArray(new WorldObject[targetList.size()]);
-				}
-				return new Creature[]
-				{
-					target
-				};
+				
+				targetList.add(target);
+				return targetList;
 			}
 			case TARGET_AREA_CORPSE_MOB:
 			{
@@ -2428,17 +2361,13 @@ public abstract class Skill
 					creature.sendPacket(new SystemMessage(SystemMessageId.THAT_IS_THE_INCORRECT_TARGET));
 					return null;
 				}
-				if (!onlyFirst)
+				
+				targetList.add(target);
+				if (onlyFirst)
 				{
-					targetList.add(target);
+					return targetList;
 				}
-				else
-				{
-					return new Creature[]
-					{
-						target
-					};
-				}
+				
 				final boolean srcInArena = creature.isInsideZone(ZoneId.PVP) && !creature.isInsideZone(ZoneId.SIEGE);
 				PlayerInstance src = null;
 				if (creature instanceof PlayerInstance)
@@ -2539,7 +2468,7 @@ public abstract class Skill
 				{
 					return null;
 				}
-				return targetList.toArray(new Creature[targetList.size()]);
+				return targetList;
 			}
 			case TARGET_UNLOCKABLE:
 			{
@@ -2549,15 +2478,9 @@ public abstract class Skill
 					creature.sendPacket(new SystemMessage(SystemMessageId.INVALID_TARGET));
 					return null;
 				}
-				if (!onlyFirst)
-				{
-					targetList.add(target);
-					return targetList.toArray(new WorldObject[targetList.size()]);
-				}
-				return new Creature[]
-				{
-					target
-				};
+				
+				targetList.add(target);
+				return targetList;
 			}
 			case TARGET_ITEM:
 			{
@@ -2573,18 +2496,9 @@ public abstract class Skill
 						creature.sendPacket(new SystemMessage(SystemMessageId.THAT_IS_THE_INCORRECT_TARGET));
 						return null;
 					}
-					if (!onlyFirst)
-					{
-						targetList.add(target);
-					}
-					else
-					{
-						return new Creature[]
-						{
-							target
-						};
-					}
-					return targetList.toArray(new WorldObject[targetList.size()]);
+					
+					targetList.add(target);
+					return targetList;
 				}
 				creature.sendPacket(new SystemMessage(SystemMessageId.THAT_IS_THE_INCORRECT_TARGET));
 				return null;
@@ -2596,16 +2510,10 @@ public abstract class Skill
 				if ((_castRange >= 0) && ((target instanceof NpcInstance) || (target instanceof SummonInstance)) && target.isUndead() && !target.isAlikeDead())
 				{
 					cha = target;
-					if (!onlyFirst)
+					targetList.add(cha);
+					if (onlyFirst)
 					{
-						targetList.add(cha); // Add target to target list
-					}
-					else
-					{
-						return new Creature[]
-						{
-							cha
-						};
+						return targetList;
 					}
 				}
 				else
@@ -2646,16 +2554,11 @@ public abstract class Skill
 							{
 								continue;
 							}
-							if (!onlyFirst)
+							
+							targetList.add((Creature) obj);
+							if (onlyFirst)
 							{
-								targetList.add((Creature) obj); // Add obj to target lists
-							}
-							else
-							{
-								return new Creature[]
-								{
-									(Creature) obj
-								};
+								return targetList;
 							}
 						}
 					}
@@ -2664,7 +2567,7 @@ public abstract class Skill
 				{
 					return null;
 				}
-				return targetList.toArray(new Creature[targetList.size()]);
+				return targetList;
 			}
 			case TARGET_ENEMY_SUMMON:
 			{
@@ -2673,10 +2576,8 @@ public abstract class Skill
 					final Summon targetSummon = (Summon) target;
 					if (((creature instanceof PlayerInstance) && (creature.getPet() != targetSummon) && !targetSummon.isDead() && ((targetSummon.getOwner().getPvpFlag() != 0) || (targetSummon.getOwner().getKarma() > 0) || targetSummon.getOwner().isInDuel())) || (targetSummon.getOwner().isInsideZone(ZoneId.PVP) && ((PlayerInstance) creature).isInsideZone(ZoneId.PVP)))
 					{
-						return new Creature[]
-						{
-							targetSummon
-						};
+						targetList.add(targetSummon);
+						return targetList;
 					}
 				}
 				return null;
@@ -2685,10 +2586,8 @@ public abstract class Skill
 			{
 				if ((target != null) && !target.isDead() && ((target instanceof DoorInstance) || (target instanceof ControlTowerInstance)))
 				{
-					return new Creature[]
-					{
-						target
-					};
+					targetList.add(target);
+					return targetList;
 				}
 				return null;
 			}
@@ -2701,10 +2600,8 @@ public abstract class Skill
 				}
 				if ((target instanceof MonsterInstance) && ((((MonsterInstance) target).getNpcId() == 22217) || (((MonsterInstance) target).getNpcId() == 22216) || (((MonsterInstance) target).getNpcId() == 22215)))
 				{
-					return new Creature[]
-					{
-						target
-					};
+					targetList.add(target);
+					return targetList;
 				}
 				return null;
 			}
@@ -2712,10 +2609,8 @@ public abstract class Skill
 			{
 				if ((target != null) && target.isDead())
 				{
-					return new Creature[]
-					{
-						target
-					};
+					targetList.add(target);
+					return targetList;
 				}
 				return null;
 			}
@@ -2728,10 +2623,8 @@ public abstract class Skill
 					final NpcInstance npc = (NpcInstance) creature;
 					if ((npc.getFactionId() == null) || npc.getFactionId().isEmpty())
 					{
-						return new Creature[]
-						{
-							creature
-						};
+						targetList.add(creature);
+						return targetList;
 					}
 					final Collection<WorldObject> objs = creature.getKnownList().getKnownObjects().values();
 					for (WorldObject newTarget : objs)
@@ -2765,20 +2658,19 @@ public abstract class Skill
 		}
 	}
 	
-	public WorldObject[] getTargetList(Creature creature)
+	public List<Creature> getTargetList(Creature creature)
 	{
 		return getTargetList(creature, false);
 	}
 	
 	public WorldObject getFirstOfTargetList(Creature creature)
 	{
-		WorldObject[] targets;
-		targets = getTargetList(creature, true);
-		if ((targets == null) || (targets.length == 0))
+		final List<Creature> targets = getTargetList(creature, true);
+		if ((targets == null) || (targets.isEmpty()))
 		{
 			return null;
 		}
-		return targets[0];
+		return targets.get(0);
 	}
 	
 	public Func[] getStatFuncs(Effect effect, Creature creature)
