@@ -669,11 +669,17 @@ public class PlayerInstance extends Playable
 			}
 			
 			// Pk protection config
-			if (!isGM() && (target instanceof PlayerInstance) && (((PlayerInstance) target).getPvpFlag() == 0) && (((PlayerInstance) target).getKarma() == 0) && ((getLevel() < Config.ALT_PLAYER_PROTECTION_LEVEL) || (target.getLevel() < Config.ALT_PLAYER_PROTECTION_LEVEL)))
+			if (Config.ALLOW_CHAR_KILL_PROTECT && !isGM() && target.isPlayer() && (target.getActingPlayer().getPvpFlag() == 0) && (target.getActingPlayer().getKarma() == 0))
 			{
-				sendMessage("You can't hit a player that is lower level from you. Target's level: " + Config.ALT_PLAYER_PROTECTION_LEVEL + ".");
-				sendPacket(ActionFailed.STATIC_PACKET);
-				return;
+				final int thisLevel = getLevel();
+				final int targetLevel = target.getActingPlayer().getLevel();
+				final Siege siege = SiegeManager.getInstance().getSiege(PlayerInstance.this);
+				if ((((siege == null) || !siege.isInProgress()) && ((thisLevel >= 20) && (targetLevel < 20))) || ((thisLevel >= 40) && (targetLevel < 40)) || ((thisLevel >= 52) && (targetLevel < 52)) || ((thisLevel >= 61) && (targetLevel < 61)) || ((thisLevel >= 76) && (targetLevel < 76)))
+				{
+					sendMessage("You can only engage in PvP if your target is in your level grade.");
+					sendPacket(ActionFailed.STATIC_PACKET);
+					return;
+				}
 			}
 			
 			super.doAttack(target);
@@ -4543,73 +4549,6 @@ public class PlayerInstance extends Playable
 			}
 			else if (isAutoAttackable(player))
 			{
-				if (Config.ALLOW_CHAR_KILL_PROTECT)
-				{
-					final Siege siege = SiegeManager.getInstance().getSiege(player);
-					if ((siege != null) && siege.isInProgress())
-					{
-						if ((player.getLevel() > 20) && (((Creature) player.getTarget()).getLevel() < 20))
-						{
-							player.sendMessage("Your target is not in your grade!");
-							player.sendPacket(ActionFailed.STATIC_PACKET);
-						}
-						
-						if ((player.getLevel() > 40) && (((Creature) player.getTarget()).getLevel() < 40))
-						{
-							player.sendMessage("Your target is not in your grade!");
-							player.sendPacket(ActionFailed.STATIC_PACKET);
-						}
-						
-						if ((player.getLevel() > 52) && (((Creature) player.getTarget()).getLevel() < 52))
-						{
-							player.sendMessage("Your target is not in your grade!");
-							player.sendPacket(ActionFailed.STATIC_PACKET);
-						}
-						
-						if ((player.getLevel() > 61) && (((Creature) player.getTarget()).getLevel() < 61))
-						{
-							player.sendMessage("Your target is not in your grade!");
-							player.sendPacket(ActionFailed.STATIC_PACKET);
-						}
-						
-						if ((player.getLevel() > 76) && (((Creature) player.getTarget()).getLevel() < 76))
-						{
-							player.sendMessage("Your target is not in your grade!");
-							player.sendPacket(ActionFailed.STATIC_PACKET);
-						}
-						
-						if ((player.getLevel() < 20) && (((Creature) player.getTarget()).getLevel() > 20))
-						{
-							player.sendMessage("Your target is not in your grade!");
-							player.sendPacket(ActionFailed.STATIC_PACKET);
-						}
-						
-						if ((player.getLevel() < 40) && (((Creature) player.getTarget()).getLevel() > 40))
-						{
-							player.sendMessage("Your target is not in your grade!");
-							player.sendPacket(ActionFailed.STATIC_PACKET);
-						}
-						
-						if ((player.getLevel() < 52) && (((Creature) player.getTarget()).getLevel() > 52))
-						{
-							player.sendMessage("Your target is not in your grade!");
-							player.sendPacket(ActionFailed.STATIC_PACKET);
-						}
-						
-						if ((player.getLevel() < 61) && (((Creature) player.getTarget()).getLevel() > 61))
-						{
-							player.sendMessage("Your target is not in your grade!");
-							player.sendPacket(ActionFailed.STATIC_PACKET);
-						}
-						
-						if ((player.getLevel() < 76) && (((Creature) player.getTarget()).getLevel() > 76))
-						{
-							player.sendMessage("Your target is not in your grade!");
-							player.sendPacket(ActionFailed.STATIC_PACKET);
-						}
-					}
-				}
-				
 				// Player with lvl < 21 can't attack a cursed weapon holder
 				// And a cursed weapon holder can't attack players with lvl < 21
 				if ((isCursedWeaponEquiped() && (player.getLevel() < 21)) || (player.isCursedWeaponEquiped() && (getLevel() < 21)))
@@ -4728,73 +4667,6 @@ public class PlayerInstance extends Playable
 				}
 				else if (isAutoAttackable(player))
 				{
-					if (Config.ALLOW_CHAR_KILL_PROTECT)
-					{
-						final Siege siege = SiegeManager.getInstance().getSiege(player);
-						if ((siege != null) && siege.isInProgress())
-						{
-							if ((player.getLevel() > 20) && (((Creature) player.getTarget()).getLevel() < 20))
-							{
-								player.sendMessage("Your target is not in your grade!");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
-							
-							if ((player.getLevel() > 40) && (((Creature) player.getTarget()).getLevel() < 40))
-							{
-								player.sendMessage("Your target is not in your grade!");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
-							
-							if ((player.getLevel() > 52) && (((Creature) player.getTarget()).getLevel() < 52))
-							{
-								player.sendMessage("Your target is not in your grade!");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
-							
-							if ((player.getLevel() > 61) && (((Creature) player.getTarget()).getLevel() < 61))
-							{
-								player.sendMessage("Your target is not in your grade!");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
-							
-							if ((player.getLevel() > 76) && (((Creature) player.getTarget()).getLevel() < 76))
-							{
-								player.sendMessage("Your target is not in your grade!");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
-							
-							if ((player.getLevel() < 20) && (((Creature) player.getTarget()).getLevel() > 20))
-							{
-								player.sendMessage("Your target is not in your grade!");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
-							
-							if ((player.getLevel() < 40) && (((Creature) player.getTarget()).getLevel() > 40))
-							{
-								player.sendMessage("Your target is not in your grade!");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
-							
-							if ((player.getLevel() < 52) && (((Creature) player.getTarget()).getLevel() > 52))
-							{
-								player.sendMessage("Your target is not in your grade!");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
-							
-							if ((player.getLevel() < 61) && (((Creature) player.getTarget()).getLevel() > 61))
-							{
-								player.sendMessage("Your target is not in your grade!");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
-							
-							if ((player.getLevel() < 76) && (((Creature) player.getTarget()).getLevel() > 76))
-							{
-								player.sendMessage("Your target is not in your grade!");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
-						}
-					}
-					
 					// Player with lvl < 21 can't attack a cursed weapon holder
 					// And a cursed weapon holder can't attack players with lvl < 21
 					if ((isCursedWeaponEquiped() && (player.getLevel() < 21)) || (player.isCursedWeaponEquiped() && (getLevel() < 21)))
@@ -5899,7 +5771,7 @@ public class PlayerInstance extends Playable
 		{
 			if (answer == 1)
 			{
-				CoupleManager.getInstance().createCouple(ptarget, PlayerInstance.this);
+				CoupleManager.getInstance().createCouple(ptarget, this);
 				ptarget.sendMessage("Request to Engage has been >ACCEPTED<");
 			}
 			else
@@ -6395,7 +6267,7 @@ public class PlayerInstance extends Playable
 			return;
 		}
 		
-		// If in duel and you kill (only can kill l2summon), do nothing
+		// If in duel and you kill (only can kill summon), do nothing
 		if (isInDuel() && targetPlayer.isInDuel())
 		{
 			return;
@@ -10255,7 +10127,7 @@ public class PlayerInstance extends Playable
 		}
 		
 		// Are the target and the player in the same duel?
-		if (isInDuel() && (!(target instanceof PlayerInstance) || (((PlayerInstance) target).getDuelId() != getDuelId())) && (!(target instanceof SummonInstance) || (((Summon) target).getOwner().getDuelId() != getDuelId())))
+		if (isInDuel() && (!(target instanceof PlayerInstance) || (target.getActingPlayer().getDuelId() != getDuelId())) && (!(target instanceof SummonInstance) || (((Summon) target).getOwner().getDuelId() != getDuelId())))
 		{
 			sendMessage("You cannot do this while duelling.");
 			sendPacket(ActionFailed.STATIC_PACKET);
@@ -10263,11 +10135,17 @@ public class PlayerInstance extends Playable
 		}
 		
 		// Pk protection config
-		if (skill.isOffensive() && !isGM() && (target instanceof PlayerInstance) && (((PlayerInstance) target).getPvpFlag() == 0) && (((PlayerInstance) target).getKarma() == 0) && ((getLevel() < Config.ALT_PLAYER_PROTECTION_LEVEL) || (((PlayerInstance) target).getLevel() < Config.ALT_PLAYER_PROTECTION_LEVEL)))
+		if (Config.ALLOW_CHAR_KILL_PROTECT && skill.isOffensive() && !isGM() && (target.isPlayer()) && (target.getActingPlayer().getPvpFlag() == 0) && (target.getActingPlayer().getKarma() == 0))
 		{
-			sendMessage("You can't hit a player that is lower level from you. Target's level: " + Config.ALT_PLAYER_PROTECTION_LEVEL + ".");
-			sendPacket(ActionFailed.STATIC_PACKET);
-			return;
+			final int thisLevel = getLevel();
+			final int targetLevel = target.getActingPlayer().getLevel();
+			final Siege siege = SiegeManager.getInstance().getSiege(this);
+			if ((((siege == null) || !siege.isInProgress()) && ((thisLevel >= 20) && (targetLevel < 20))) || ((thisLevel >= 40) && (targetLevel < 40)) || ((thisLevel >= 52) && (targetLevel < 52)) || ((thisLevel >= 61) && (targetLevel < 61)) || ((thisLevel >= 76) && (targetLevel < 76)))
+			{
+				sendMessage("You can only engage in PvP if your target is in your level grade.");
+				sendPacket(ActionFailed.STATIC_PACKET);
+				return;
+			}
 		}
 		
 		// ************************************* Check skill availability *******************************************
@@ -10658,7 +10536,7 @@ public class PlayerInstance extends Playable
 		// Check if player and target are in events and on the same team.
 		if (target instanceof PlayerInstance)
 		{
-			if ((skill.isOffensive() && (_inEventTvT && ((PlayerInstance) target)._inEventTvT && TvT.isStarted() && !_teamNameTvT.equals(((PlayerInstance) target)._teamNameTvT))) || (_inEventCTF && ((PlayerInstance) target)._inEventCTF && CTF.isStarted() && !_teamNameCTF.equals(((PlayerInstance) target)._teamNameCTF)) || (_inEventDM && ((PlayerInstance) target)._inEventDM && DM.hasStarted()) || (_inEventVIP && ((PlayerInstance) target)._inEventVIP && VIP._started))
+			if ((skill.isOffensive() && (_inEventTvT && target.getActingPlayer()._inEventTvT && TvT.isStarted() && !_teamNameTvT.equals(target.getActingPlayer()._teamNameTvT))) || (_inEventCTF && target.getActingPlayer()._inEventCTF && CTF.isStarted() && !_teamNameCTF.equals(target.getActingPlayer()._teamNameCTF)) || (_inEventDM && target.getActingPlayer()._inEventDM && DM.hasStarted()) || (_inEventVIP && target.getActingPlayer()._inEventVIP && VIP._started))
 			{
 				return true;
 			}
@@ -11396,7 +11274,7 @@ public class PlayerInstance extends Playable
 		if (!_observerMode)
 		{
 			LOGGER.warning("Player " + getName() + " request leave observer mode when he not use it!");
-			Util.handleIllegalPlayerAction(PlayerInstance.this, "Warning!! Character " + getName() + " tried to cheat in observer mode.", Config.DEFAULT_PUNISH);
+			Util.handleIllegalPlayerAction(this, "Warning!! Character " + getName() + " tried to cheat in observer mode.", Config.DEFAULT_PUNISH);
 		}
 		setTarget(null);
 		setXYZ(_obsX, _obsY, _obsZ);
@@ -15169,7 +15047,7 @@ public class PlayerInstance extends Playable
 			
 		}
 		
-		if (isInOlympiadMode() && (target instanceof PlayerInstance) && ((PlayerInstance) target).isInOlympiadMode() && (((PlayerInstance) target).getOlympiadGameId() == getOlympiadGameId()))
+		if (isInOlympiadMode() && (target instanceof PlayerInstance) && target.getActingPlayer().isInOlympiadMode() && (target.getActingPlayer().getOlympiadGameId() == getOlympiadGameId()))
 		{
 			Olympiad.getInstance().notifyCompetitorDamage(this, damage, getOlympiadGameId());
 		}
