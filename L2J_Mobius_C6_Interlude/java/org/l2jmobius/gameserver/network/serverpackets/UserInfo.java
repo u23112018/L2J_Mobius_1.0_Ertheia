@@ -21,7 +21,6 @@ import org.l2jmobius.gameserver.datatables.sql.NpcTable;
 import org.l2jmobius.gameserver.instancemanager.CursedWeaponsManager;
 import org.l2jmobius.gameserver.model.Inventory;
 import org.l2jmobius.gameserver.model.actor.Creature;
-import org.l2jmobius.gameserver.model.actor.Summon;
 import org.l2jmobius.gameserver.model.actor.instance.PlayerInstance;
 import org.l2jmobius.gameserver.model.actor.templates.NpcTemplate;
 
@@ -192,19 +191,8 @@ public class UserInfo extends GameServerPacket
 		writeD(_flyWalkSpd);
 		writeF(_player.getMovementSpeedMultiplier()); // run speed multiplier
 		writeF(_player.getAttackSpeedMultiplier()); // attack speed multiplier
-		
-		final Summon pet = _player.getPet();
-		if ((_player.getMountType() != 0) && (pet != null))
-		{
-			writeF(pet.getTemplate().getCollisionRadius());
-			writeF(pet.getTemplate().getCollisionHeight());
-		}
-		else
-		{
-			writeF(_player.getBaseTemplate().getCollisionRadius());
-			writeF(_player.getBaseTemplate().getCollisionHeight());
-		}
-		
+		writeF(_player.getCollisionRadius());
+		writeF(_player.getCollisionHeight());
 		writeD(_player.getAppearance().getHairStyle());
 		writeD(_player.getAppearance().getHairColor());
 		writeD(_player.getAppearance().getFace());
