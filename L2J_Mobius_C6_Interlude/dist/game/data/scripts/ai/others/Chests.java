@@ -64,13 +64,14 @@ public class Chests extends Quest
 		// if this has already been interacted, no further ai decisions are needed
 		// if it's the first interaction, check if this is a box or mimic
 		final ChestInstance chest = (ChestInstance) npc;
-		if (chest.isInteracted())
+		if (!chest.isInteracted())
 		{
 			chest.setInteracted();
-			if (Rnd.get(100) < IS_BOX)
+			final boolean isDeluxeSkill = skill.getId() == SKILL_DELUXE_KEY;
+			if ((Rnd.get(100) < IS_BOX) || isDeluxeSkill)
 			{
-				// if it's a box, either it will be successfully openned by a proper key, or instantly disappear
-				if (skill.getId() == SKILL_DELUXE_KEY)
+				// if it's a box, either it will be successfully opened by a proper key, or instantly disappear
+				if (isDeluxeSkill)
 				{
 					// check the chance to open the box
 					final int keyLevelNeeded = chest.getLevel() / 10;
