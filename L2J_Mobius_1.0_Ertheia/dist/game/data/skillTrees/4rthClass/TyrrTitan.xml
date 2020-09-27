@@ -9,6 +9,8 @@
 		<skill skillName="Crystallize" skillId="248" skillLvl="5" getLevel="85" autoGet="true" />
 		<skill skillName="Crystallize" skillId="248" skillLvl="6" getLevel="85" autoGet="true" />
 		<skill skillName="Tyrr Aura" skillId="1929" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="Block Tyrr Force" skillId="1947" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="Summon Battle Scar" skillId="8601" skillLvl="1" getLevel="85" autoGet="true" />
 		<skill skillName="Frenzy" skillId="176" skillLvl="6" getLevel="85" levelUpSp="10000" />
 		<skill skillName="Hurricane Rush" skillId="10267" skillLvl="1" getLevel="85" levelUpSp="10000" />
 		<skill skillName="Superior HP Mastery" skillId="10256" skillLvl="1" getLevel="85" levelUpSp="10000">

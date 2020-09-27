@@ -8,6 +8,8 @@
 		<skill skillName="Crystallize" skillId="248" skillLvl="4" getLevel="85" autoGet="true" />
 		<skill skillName="Crystallize" skillId="248" skillLvl="5" getLevel="85" autoGet="true" />
 		<skill skillName="Crystallize" skillId="248" skillLvl="6" getLevel="85" autoGet="true" />
+		<skill skillName="Block Iss Force" skillId="1951" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="Summon Swift Melody" skillId="8606" skillLvl="1" getLevel="85" autoGet="true" />
 		<skill skillName="Crippling Attack" skillId="11509" skillLvl="1" getLevel="85" levelUpSp="10000">
 			<removeSkill id="1564" /> <!-- Penetrating Attack -->
 		</skill>

@@ -9,6 +9,8 @@
 		<skill skillName="Crystallize" skillId="248" skillLvl="5" getLevel="85" autoGet="true" />
 		<skill skillName="Crystallize" skillId="248" skillLvl="6" getLevel="85" autoGet="true" />
 		<skill skillName="Wynn Aura" skillId="1937" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="Block Wynn Force" skillId="1952" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="Summon White Wing" skillId="8605" skillLvl="1" getLevel="85" autoGet="true" />
 		<skill skillName="Blessing of the Giants" skillId="11297" skillLvl="1" getLevel="85" levelUpSp="10000">
 			<removeSkill id="1349" /> <!-- Final Servitor -->
 		</skill>
@@ -114,11 +116,10 @@
 		</skill>
 		<skill skillName="Create Common Item" skillId="1320" skillLvl="10" getLevel="85" autoGet="true" />
 		<skill skillName="Greater Servitor Haste" skillId="11347" skillLvl="1" getLevel="85" levelUpSp="10000" />
-		<skill skillName="Summon White Wing" skillId="8605" skillLvl="1" getLevel="85" autoGet="true" />
 		<!-- Hidden alter skill triggers -->
-		<skill skillName="Heavy Hit" skillId="11500" skillLvl="1" getLevel="85" autoGet="true"/>
-		<skill skillName="Heavy Hit" skillId="11499" skillLvl="1" getLevel="85" autoGet="true"/>
-		<skill skillName="" skillId="14579" skillLvl="1" getLevel="85" autoGet="true"/>
+		<skill skillName="Heavy Hit" skillId="11500" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="Heavy Hit" skillId="11499" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="" skillId="14579" skillLvl="1" getLevel="85" autoGet="true" />
 
 		<skill skillName="Mark of Fire" skillId="11298" skillLvl="2" getLevel="86" levelUpSp="50000" />
 		<skill skillName="Mark of Trick" skillId="11262" skillLvl="2" getLevel="86" levelUpSp="50000" />

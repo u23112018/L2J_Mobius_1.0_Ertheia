@@ -9,6 +9,8 @@
 		<skill skillName="Crystallize" skillId="248" skillLvl="5" getLevel="85" autoGet="true" />
 		<skill skillName="Crystallize" skillId="248" skillLvl="6" getLevel="85" autoGet="true" />
 		<skill skillName="Tyrr Aura" skillId="1929" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="Block Tyrr Force" skillId="1947" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="Summon Battle Scar" skillId="8601" skillLvl="1" getLevel="85" autoGet="true" />
 		<skill skillName="Berserker" skillId="10274" skillLvl="1" getLevel="85" levelUpSp="10000">
 			<removeSkill id="1510" /> <!-- Soul Cleanse -->
 			<removeSkill id="317" /> <!-- Focus Attack -->
@@ -150,11 +152,10 @@
 		</skill>
 		<skill skillName="Fury Fists" skillId="222" skillLvl="4" getLevel="85" levelUpSp="10000" />
 		<skill skillName="Momentum Flash" skillId="10327" skillLvl="1" getLevel="85" levelUpSp="10000" />
-		<skill skillName="Summon Battle Scar" skillId="8601" skillLvl="1" getLevel="85" autoGet="true" />
 		<!-- Hidden alter skill triggers -->
-		<skill skillName="Heavy Hit" skillId="10500" skillLvl="1" getLevel="85" autoGet="true"/>
-		<skill skillName="Heavy Hit" skillId="10499" skillLvl="1" getLevel="85" autoGet="true"/>
-		<skill skillName="" skillId="14579" skillLvl="1" getLevel="85" autoGet="true"/>
+		<skill skillName="Heavy Hit" skillId="10500" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="Heavy Hit" skillId="10499" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="" skillId="14579" skillLvl="1" getLevel="85" autoGet="true" />
 
 		<skill skillName="Eruption" skillId="10265" skillLvl="2" getLevel="86" levelUpSp="50000" />
 		<skill skillName="Mega Strike" skillId="10260" skillLvl="2" getLevel="86" levelUpSp="50000" />

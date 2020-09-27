@@ -9,6 +9,8 @@
 		<skill skillName="Crystallize" skillId="248" skillLvl="5" getLevel="85" autoGet="true" />
 		<skill skillName="Crystallize" skillId="248" skillLvl="6" getLevel="85" autoGet="true" />
 		<skill skillName="Yul Aura" skillId="1933" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="Block Yul Force" skillId="1949" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="Summon Tempest Arrow" skillId="8603" skillLvl="1" getLevel="85" autoGet="true" />
 		<skill skillName="Superior Critical Arrow" skillId="10756" skillLvl="1" getLevel="85" levelUpSp="10000">
 			<removeSkill id="334" /> <!-- Focus Skill Mastery -->
 			<removeSkill id="312" /> <!-- Vicious Stance -->
@@ -141,11 +143,10 @@
 			<removeSkill id="987" /> <!-- Multiple Shot -->
 		</skill>
 		<skill skillName="Bow Strike" skillId="10761" skillLvl="1" getLevel="85" levelUpSp="10000" />
-		<skill skillName="Summon Tempest Arrow" skillId="8603" skillLvl="1" getLevel="85" autoGet="true" />
 		<!-- Hidden alter skill triggers -->
-		<skill skillName="Heavy Hit" skillId="11000" skillLvl="1" getLevel="85" autoGet="true"/>
-		<skill skillName="Heavy Hit" skillId="10999" skillLvl="1" getLevel="85" autoGet="true"/>
-		<skill skillName="" skillId="14579" skillLvl="1" getLevel="85" autoGet="true"/>
+		<skill skillName="Heavy Hit" skillId="11000" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="Heavy Hit" skillId="10999" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="" skillId="14579" skillLvl="1" getLevel="85" autoGet="true" />
 
 		<skill skillName="Tornado Shot" skillId="10760" skillLvl="2" getLevel="86" levelUpSp="50000" />
 		<skill skillName="Slow Shot" skillId="10780" skillLvl="2" getLevel="86" levelUpSp="50000" />

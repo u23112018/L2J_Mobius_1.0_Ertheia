@@ -9,6 +9,8 @@
 		<skill skillName="Crystallize" skillId="248" skillLvl="5" getLevel="85" autoGet="true" />
 		<skill skillName="Crystallize" skillId="248" skillLvl="6" getLevel="85" autoGet="true" />
 		<skill skillName="Sigel Aura" skillId="1927" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="Block Sigel Force" skillId="1946" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="Summon Royal Aegis" skillId="8600" skillLvl="1" getLevel="85" autoGet="true" />
 		<skill skillName="Challenge Aura" skillId="10030" skillLvl="1" getLevel="85" levelUpSp="10000">
 			<removeSkill id="982" /> <!-- Combat Aura -->
 		</skill>
@@ -125,11 +127,10 @@
 			<removeSkill id="916" /> <!-- Shield Deflect Magic -->
 			<removeSkill id="86" /> <!-- Reflect Damage -->
 		</skill>
-		<skill skillName="Summon Royal Aegis" skillId="8600" skillLvl="1" getLevel="85" autoGet="true" />
 		<!-- Hidden alter skill triggers -->
-		<skill skillName="Heavy Hit" skillId="10250" skillLvl="1" getLevel="85" autoGet="true"/>
-		<skill skillName="Heavy Hit" skillId="10249" skillLvl="1" getLevel="85" autoGet="true"/>
-		<skill skillName="" skillId="14579" skillLvl="1" getLevel="85" autoGet="true"/>
+		<skill skillName="Heavy Hit" skillId="10250" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="Heavy Hit" skillId="10249" skillLvl="1" getLevel="85" autoGet="true" />
+		<skill skillName="" skillId="14579" skillLvl="1" getLevel="85" autoGet="true" />
 
 		<skill skillName="Shield Charge" skillId="10008" skillLvl="2" getLevel="86" levelUpSp="50000" />
 		<skill skillName="Justice Punishment" skillId="10010" skillLvl="2" getLevel="86" levelUpSp="50000" />
