@@ -1301,7 +1301,7 @@
 			<height normal="36" />
 		</collision>
 	</npc>
-	<npc id="23126" level="104" type="Monster" name="Embryo Elite Escort">
+	<npc id="23126" level="95" type="Monster" name="Embryo Elite Escort">
 		<parameters>
 			<param name="IsAggressive" value="1" />
 			<skill name="Skill01_ID" id="1683" level="1" />
@@ -1310,16 +1310,16 @@
 		</parameters>
 		<acquire exp="894810384" sp="894807" />
 		<stats str="88" int="79" dex="55" wit="78" con="82" men="78">
-			<vitals hp="1118252.67345" hpRegen="9.5" mp="31115.637" mpRegen="3.3" />
-			<attack physical="52427" magical="42381" random="30" critical="4.75" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
-			<defence physical="4845" magical="2813" />
+			<vitals hp="321920.231213873" hpRegen="9.5" mp="22058.0858085809" mpRegen="3.3" />
+			<attack physical="17949.5424805961" magical="1931.98433655175" random="30" critical="4" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
+			<defence physical="388.96873877111" magical="221.168361895478" />
 			<speed>
 				<walk ground="35" />
 				<run ground="130" />
 			</speed>
 			<attribute>
-				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 				<attack type="DARK" value="330" />
+				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 			</attribute>
 		</stats>
 		<status attackable="true" />
@@ -1328,19 +1328,34 @@
 			<height normal="29" />
 		</collision>
 		<skillList>
+			<skill id="4408" level="10" /> <!-- HP Increase (2x) -->
+			<skill id="4410" level="12" /> <!-- Slightly Strong P. Atk. -->
+			<skill id="4411" level="12" /> <!-- Slightly Strong M. Atk. -->
+			<skill id="4412" level="13" /> <!-- Slightly Strong P. Def. -->
+			<skill id="4413" level="13" /> <!-- Slightly Strong M. Def. -->
+			<skill id="4415" level="3" /> <!-- One-handed Sword -->
 			<skill id="4416" level="14" /> <!-- Humans -->
-			<skill id="5467" level="1" /> <!-- Dark Attack -->
-			<skill id="14821" level="1" /> <!-- Instant Kill Attack Resistance -->
-			<skill id="4435" level="5" /> <!-- High Stun Attack Resistance -->
 			<skill id="5273" level="1" /> <!-- Power Strike -->
+			<skill id="5467" level="1" /> <!-- Dark Attack -->
+			<skill id="14765" level="3" /> <!-- Blood Siphon Resistance -->
 		</skillList>
 		<ai aggroRange="300" isAggressive="true" clanHelpRange="300">
 			<clanList>
 				<clan>EMBRYO_HIGH</clan>
 			</clanList>
 		</ai>
+		<dropLists>
+			<drop>
+				<item id="57" min="2000" max="5000" chance="70" /> <!-- Adena -->
+				<item id="17527" min="1" max="1" chance="0.3003003003003" /> <!-- Scroll: Enchant Armor (R-grade) -->
+			</drop>
+			<spoil>
+				<item id="36533" min="1" max="1" chance="12.5" /> <!-- Synthetic Braid -->
+				<item id="17527" min="1" max="1" chance="0.75187969924812" /> <!-- Scroll: Enchant Armor (R-grade) -->
+			</spoil>
+		</dropLists>
 	</npc>
-	<npc id="23127" level="104" type="Monster" name="Embryo Elite Chaser">
+	<npc id="23127" level="95" type="Monster" name="Embryo Elite Chaser">
 		<parameters>
 			<param name="IsAggressive" value="1" />
 			<skill name="Skill01_ID" id="1692" level="1" />
@@ -1352,16 +1367,16 @@
 		<equipment rhand="15302" />
 		<acquire exp="894810384" sp="894807" />
 		<stats str="88" int="79" dex="55" wit="78" con="82" men="78">
-			<vitals hp="1118252.67345" hpRegen="9.5" mp="31115.637" mpRegen="3.3" />
-			<attack physical="52427" magical="42381" random="30" critical="4.75" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
-			<defence physical="4845" magical="2813" />
+			<vitals hp="321920.231213873" hpRegen="9.5" mp="22058.0858085809" mpRegen="3.3" />
+			<attack physical="14647.1473131245" magical="1932.0183629253" random="30" critical="8" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
+			<defence physical="311.264822134387" magical="176.993983983379" />
 			<speed>
 				<walk ground="48" />
 				<run ground="180" />
 			</speed>
 			<attribute>
-				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 				<attack type="DARK" value="330" />
+				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 			</attribute>
 		</stats>
 		<status attackable="true" />
@@ -1370,18 +1385,33 @@
 			<height normal="29" />
 		</collision>
 		<skillList>
+			<skill id="4410" level="13" /> <!-- Slightly Strong P. Atk. -->
+			<skill id="4411" level="13" /> <!-- Slightly Strong M. Atk. -->
+			<skill id="4412" level="13" /> <!-- Slightly Strong P. Def. -->
+			<skill id="4413" level="13" /> <!-- Slightly Strong M. Def. -->
+			<skill id="4415" level="9" /> <!-- Bow -->
 			<skill id="4416" level="14" /> <!-- Humans -->
-			<skill id="5467" level="1" /> <!-- Dark Attack -->
-			<skill id="14821" level="1" /> <!-- Instant Kill Attack Resistance -->
 			<skill id="5298" level="1" /> <!-- Power Shot -->
+			<skill id="5467" level="1" /> <!-- Dark Attack -->
+			<skill id="14765" level="3" /> <!-- Blood Siphon Resistance -->
 		</skillList>
 		<ai aggroRange="300" isAggressive="true" clanHelpRange="300">
 			<clanList>
 				<clan>EMBRYO_HIGH</clan>
 			</clanList>
 		</ai>
+		<dropLists>
+			<drop>
+				<item id="57" min="2000" max="5000" chance="70" /> <!-- Adena -->
+				<item id="17526" min="1" max="1" chance="0.149925037481259" /> <!-- Scroll: Enchant Weapon (R-grade) -->
+			</drop>
+			<spoil>
+				<item id="36533" min="1" max="1" chance="12.5" /> <!-- Synthetic Braid -->
+				<item id="17527" min="1" max="1" chance="0.75187969924812" /> <!-- Scroll: Enchant Armor (R-grade) -->
+			</spoil>
+		</dropLists>
 	</npc>
-	<npc id="23128" level="104" type="Monster" name="Embryo Elite Warrior">
+	<npc id="23128" level="95" type="Monster" name="Embryo Elite Warrior">
 		<parameters>
 			<param name="IsAggressive" value="1" />
 			<skill name="Skill01_ID" id="1687" level="1" />
@@ -1392,16 +1422,16 @@
 		<sex>MALE</sex>
 		<acquire exp="894810384" sp="894807" />
 		<stats str="88" int="79" dex="55" wit="78" con="82" men="78">
-			<vitals hp="1118252.67345" hpRegen="9.5" mp="31115.637" mpRegen="3.3" />
-			<attack physical="52427" magical="42381" random="30" critical="4.75" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
-			<defence physical="4845" magical="2813" />
+			<vitals hp="321920.231213873" hpRegen="9.5" mp="22058.0858085809" mpRegen="3.3" />
+			<attack physical="17949.4405915197" magical="1932.0183629253" random="30" critical="4" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
+			<defence physical="388.96873877111" magical="221.168361895478" />
 			<speed>
 				<walk ground="35" />
 				<run ground="130" />
 			</speed>
 			<attribute>
-				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 				<attack type="DARK" value="330" />
+				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 			</attribute>
 		</stats>
 		<status attackable="true" />
@@ -1410,19 +1440,34 @@
 			<height normal="29" />
 		</collision>
 		<skillList>
+			<skill id="4410" level="14" /> <!-- Strong P. Atk. -->
+			<skill id="4411" level="13" /> <!-- Slightly Strong M. Atk. -->
+			<skill id="4412" level="13" /> <!-- Slightly Strong P. Def. -->
+			<skill id="4413" level="13" /> <!-- Slightly Strong M. Def. -->
+			<skill id="4415" level="11" /> <!-- Spear -->
 			<skill id="4416" level="14" /> <!-- Humans -->
-			<skill id="5467" level="1" /> <!-- Dark Attack -->
-			<skill id="14821" level="1" /> <!-- Instant Kill Attack Resistance -->
-			<skill id="4435" level="5" /> <!-- High Stun Attack Resistance -->
 			<skill id="5275" level="1" /> <!-- Spinning Slasher -->
+			<skill id="5467" level="1" /> <!-- Dark Attack -->
+			<skill id="14765" level="3" /> <!-- Blood Siphon Resistance -->
 		</skillList>
 		<ai aggroRange="300" isAggressive="true" clanHelpRange="300">
 			<clanList>
 				<clan>EMBRYO_HIGH</clan>
 			</clanList>
 		</ai>
+		<dropLists>
+			<drop>
+				<item id="57" min="2000" max="5000" chance="70" /> <!-- Adena -->
+				<item id="17527" min="1" max="1" chance="0.3003003003003" /> <!-- Scroll: Enchant Armor (R-grade) -->
+				<item id="17526" min="1" max="1" chance="0.149925037481259" /> <!-- Scroll: Enchant Weapon (R-grade) -->
+			</drop>
+			<spoil>
+				<item id="36533" min="1" max="1" chance="12.5" /> <!-- Synthetic Braid -->
+				<item id="17527" min="1" max="1" chance="0.75187969924812" /> <!-- Scroll: Enchant Armor (R-grade) -->
+			</spoil>
+		</dropLists>
 	</npc>
-	<npc id="23129" level="104" type="Monster" name="Embryo Elite Alchemist">
+	<npc id="23129" level="95" type="Monster" name="Embryo Elite Alchemist">
 		<parameters>
 			<param name="IsAggressive" value="1" />
 			<skill name="Skill01_ID" id="1698" level="1" />
@@ -1433,16 +1478,16 @@
 		<sex>FEMALE</sex>
 		<acquire exp="894810384" sp="894807" />
 		<stats str="88" int="79" dex="55" wit="78" con="82" men="78">
-			<vitals hp="1118252.67345" hpRegen="9.5" mp="31115.637" mpRegen="3.3" />
-			<attack physical="52427" magical="42381" random="30" critical="4.75" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
-			<defence physical="4845" magical="2813" />
+			<vitals hp="321920.231213873" hpRegen="9.5" mp="33087.1287128713" mpRegen="3.3" />
+			<attack physical="17949.2428215681" magical="3863.97946808511" random="30" critical="4" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
+			<defence physical="311.264822134387" magical="220.903097174706" />
 			<speed>
 				<walk ground="32" />
 				<run ground="136" />
 			</speed>
 			<attribute>
-				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 				<attack type="DARK" value="330" />
+				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 			</attribute>
 		</stats>
 		<status attackable="true" />
@@ -1451,11 +1496,15 @@
 			<height normal="21" />
 		</collision>
 		<skillList>
+			<skill id="4410" level="13" /> <!-- Slightly Strong P. Atk. -->
+			<skill id="4411" level="14" /> <!-- Strong M. Atk. -->
+			<skill id="4412" level="13" /> <!-- Slightly Strong P. Def. -->
+			<skill id="4413" level="14" /> <!-- Strong M. Def. -->
+			<skill id="4415" level="3" /> <!-- One-handed Sword -->
 			<skill id="4416" level="14" /> <!-- Humans -->
-			<skill id="5467" level="1" /> <!-- Dark Attack -->
-			<skill id="14821" level="1" /> <!-- Instant Kill Attack Resistance -->
-			<skill id="4438" level="5" /> <!-- Greater Sleep Resistance -->
 			<skill id="5312" level="1" /> <!-- Blaze -->
+			<skill id="5467" level="1" /> <!-- Dark Attack -->
+			<skill id="14765" level="3" /> <!-- Blood Siphon Resistance -->
 		</skillList>
 		<ai aggroRange="300" isAggressive="true" clanHelpRange="300">
 			<clanList>
@@ -1464,19 +1513,19 @@
 		</ai>
 		<dropLists>
 			<drop>
-				<item id="57" min="3233" max="7540" chance="70" /> <!-- Adena -->
-				<item id="17527" min="1" max="1" chance="1.633" /> <!-- Scroll: Enchant Armor (R-grade) -->
+				<item id="57" min="2000" max="5000" chance="70" /> <!-- Adena -->
+				<item id="17527" min="1" max="1" chance="0.3003003003003" /> <!-- Scroll: Enchant Armor (R-grade) -->
 			</drop>
 			<spoil>
-				<item id="36533" min="1" max="1" chance="10.63" /> <!-- Synthetic Braid -->
-				<item id="17526" min="1" max="1" chance="0.03" /> <!-- Scroll: Enchant Weapon (R-grade) -->
+				<item id="36533" min="1" max="1" chance="10" /> <!-- Synthetic Braid -->
+				<item id="17526" min="1" max="1" chance="0.0750187546886722" /> <!-- Scroll: Enchant Weapon (R-grade) -->
 			</spoil>
 			<lucky>
 				<item id="39629" min="1" max="1" chance="100" /> <!-- Fortune Pocket - Stage 1 -->
 			</lucky>
 		</dropLists>
 	</npc>
-	<npc id="23130" level="104" type="Monster" name="Embryo Elite High Priest">
+	<npc id="23130" level="95" type="Monster" name="Embryo Elite High Priest">
 		<parameters>
 			<param name="IsAggressive" value="1" />
 			<skill name="Skill01_ID" id="4002" level="11" />
@@ -1487,16 +1536,16 @@
 		<sex>FEMALE</sex>
 		<acquire exp="894810384" sp="894807" />
 		<stats str="88" int="79" dex="55" wit="78" con="82" men="78">
-			<vitals hp="1118252.67345" hpRegen="9.5" mp="31115.637" mpRegen="3.3" />
-			<attack physical="52427" magical="42381" random="30" critical="4.75" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
-			<defence physical="4845" magical="2813" />
+			<vitals hp="321920.231213873" hpRegen="9.5" mp="33087.1287128713" mpRegen="3.3" />
+			<attack physical="17949.5424805961" magical="3864.0367258506" random="30" critical="4" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
+			<defence physical="311.264822134387" magical="221.168361895478" />
 			<speed>
 				<walk ground="32" />
 				<run ground="136" />
 			</speed>
 			<attribute>
-				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 				<attack type="DARK" value="330" />
+				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 			</attribute>
 		</stats>
 		<status attackable="true" />
@@ -1505,19 +1554,33 @@
 			<height normal="21" />
 		</collision>
 		<skillList>
+			<skill id="4002" level="1" /> <!-- Blood Siphon -->
+			<skill id="4410" level="12" /> <!-- Slightly Strong P. Atk. -->
+			<skill id="4411" level="13" /> <!-- Slightly Strong M. Atk. -->
+			<skill id="4412" level="13" /> <!-- Slightly Strong P. Def. -->
+			<skill id="4413" level="13" /> <!-- Slightly Strong M. Def. -->
+			<skill id="4415" level="3" /> <!-- One-handed Sword -->
 			<skill id="4416" level="14" /> <!-- Humans -->
 			<skill id="5467" level="1" /> <!-- Dark Attack -->
-			<skill id="14821" level="1" /> <!-- Instant Kill Attack Resistance -->
-			<skill id="4438" level="5" /> <!-- Greater Sleep Resistance -->
-			<skill id="4002" level="1" /> <!-- Blood Siphon -->
+			<skill id="14765" level="3" /> <!-- Blood Siphon Resistance -->
 		</skillList>
 		<ai aggroRange="300" isAggressive="true" clanHelpRange="300">
 			<clanList>
 				<clan>EMBRYO_HIGH</clan>
 			</clanList>
 		</ai>
+		<dropLists>
+			<drop>
+				<item id="57" min="2000" max="5000" chance="70" /> <!-- Adena -->
+				<item id="17527" min="1" max="1" chance="0.3003003003003" /> <!-- Scroll: Enchant Armor (R-grade) -->
+			</drop>
+			<spoil>
+				<item id="36533" min="1" max="1" chance="10" /> <!-- Synthetic Braid -->
+				<item id="17526" min="1" max="1" chance="0.0750187546886722" /> <!-- Scroll: Enchant Weapon (R-grade) -->
+			</spoil>
+		</dropLists>
 	</npc>
-	<npc id="23131" level="104" type="Monster" name="Embryo Executor Captain" title="Watchman of the Altar">
+	<npc id="23131" level="95" type="Monster" name="Embryo Executor Captain" title="Watchman of the Altar">
 		<parameters>
 			<param name="IsAggressive" value="1" />
 			<skill name="Skill01_ID" id="5483" level="1" />
@@ -1529,16 +1592,16 @@
 		<acquire exp="1789620768" sp="1789615" />
 		<equipment rhand="13979" lhand="13980" /> <!-- Monster Only (Dragontroop Commando) / Monster Only (Dragontroop Defender) -->
 		<stats str="88" int="79" dex="55" wit="78" con="82" men="78">
-			<vitals hp="1118252.67345" hpRegen="9.5" mp="31115.637" mpRegen="3.3" />
-			<attack physical="52427" magical="42381" random="30" critical="4.75" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
-			<defence physical="4845" magical="2813" />
+			<vitals hp="321920.231213873" hpRegen="9.5" mp="22058.0858085809" mpRegen="3.3" />
+			<attack physical="107695.123974933" magical="11591.8990395415" random="30" critical="4" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
+			<defence physical="485.861392611965" magical="276.196302206226" />
 			<speed>
 				<walk ground="36" />
 				<run ground="160" />
 			</speed>
 			<attribute>
-				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 				<attack type="DARK" value="330" />
+				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 			</attribute>
 		</stats>
 		<status attackable="true" />
@@ -1547,12 +1610,26 @@
 			<height normal="29.5" />
 		</collision>
 		<skillList>
+			<skill id="4408" level="10" /> <!-- HP Increase (2x) -->
+			<skill id="4410" level="13" /> <!-- Slightly Strong P. Atk. -->
+			<skill id="4411" level="13" /> <!-- Slightly Strong M. Atk. -->
+			<skill id="4412" level="14" /> <!-- Strong P. Def. -->
+			<skill id="4413" level="14" /> <!-- Strong M. Def. -->
+			<skill id="4415" level="3" /> <!-- One-handed Sword -->
 			<skill id="4416" level="14" /> <!-- Humans -->
-			<skill id="5467" level="1" /> <!-- Dark Attack -->
-			<skill id="14821" level="1" /> <!-- Instant Kill Attack Resistance -->
-			<skill id="4435" level="5" /> <!-- High Stun Attack Resistance -->
 			<skill id="5273" level="1" /> <!-- Power Strike -->
+			<skill id="5467" level="1" /> <!-- Dark Attack -->
+			<skill id="14765" level="3" /> <!-- Blood Siphon Resistance -->
 		</skillList>
+		<dropLists>
+			<drop>
+				<item id="57" min="4000" max="10000" chance="70" /> <!-- Adena -->
+				<item id="17527" min="1" max="1" chance="0.75187969924812" /> <!-- Scroll: Enchant Armor (R-grade) -->
+			</drop>
+			<spoil>
+				<item id="36533" min="1" max="1" chance="50" /> <!-- Synthetic Braid -->
+			</spoil>
+		</dropLists>
 	</npc>
 	<npc id="23132" level="104" type="Monster" name="Etina Gospel">
 		<parameters>
@@ -1824,7 +1901,7 @@
 		</skillList>
 		<ai aggroRange="300" isAggressive="true" clanHelpRange="300" />
 	</npc>
-	<npc id="23138" level="104" type="Monster" name="Etina Bladesmen" title="Watchman of the Altar">
+	<npc id="23138" level="95" type="Monster" name="Etina Bladesmen" title="Watchman of the Altar">
 		<parameters>
 			<param name="IsAggressive" value="1" />
 			<skill name="Skill01_ID" id="6093" level="1" />
@@ -1835,16 +1912,16 @@
 		<sex>MALE</sex>
 		<acquire exp="1789620768" sp="1789615" />
 		<stats str="88" int="79" dex="55" wit="78" con="82" men="78">
-			<vitals hp="1118252.67345" hpRegen="9.5" mp="31115.637" mpRegen="3.3" />
-			<attack physical="52427" magical="42381" random="30" critical="4.75" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
-			<defence physical="4845" magical="2813" />
+			<vitals hp="321920.231213873" hpRegen="9.5" mp="22058.0858085809" mpRegen="3.3" />
+			<attack physical="107695.123974933" magical="11591.8990395415" random="30" critical="4" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
+			<defence physical="485.861392611965" magical="276.196302206226" />
 			<speed>
 				<walk ground="30" />
 				<run ground="180" />
 			</speed>
 			<attribute>
-				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 				<attack type="DARK" value="330" />
+				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 			</attribute>
 		</stats>
 		<status attackable="true" />
@@ -1853,15 +1930,30 @@
 			<height normal="34" />
 		</collision>
 		<skillList>
+			<skill id="4408" level="10" /> <!-- HP Increase (2x) -->
+			<skill id="4410" level="13" /> <!-- Slightly Strong P. Atk. -->
+			<skill id="4411" level="13" /> <!-- Slightly Strong M. Atk. -->
+			<skill id="4412" level="14" /> <!-- Strong P. Def. -->
+			<skill id="4413" level="14" /> <!-- Strong M. Def. -->
+			<skill id="4415" level="3" /> <!-- One-handed Sword -->
 			<skill id="4416" level="9" /> <!-- Demons -->
 			<skill id="5467" level="1" /> <!-- Dark Attack -->
-			<skill id="14821" level="1" /> <!-- Instant Kill Attack Resistance -->
-			<skill id="4435" level="5" /> <!-- High Stun Attack Resistance -->
 			<skill id="6093" level="1" /> <!-- Panther Hide -->
+			<skill id="14765" level="3" /> <!-- Blood Siphon Resistance -->
 		</skillList>
 		<ai aggroRange="300" isAggressive="true" clanHelpRange="300" />
+		<dropLists>
+			<drop>
+				<item id="57" min="4000" max="10000" chance="70" /> <!-- Adena -->
+				<item id="17526" min="1" max="1" chance="0.149925037481259" /> <!-- Scroll: Enchant Weapon (R-grade) -->
+			</drop>
+			<spoil>
+				<item id="36533" min="1" max="1" chance="25" /> <!-- Synthetic Braid -->
+				<item id="19440" min="1" max="1" chance="1.5" /> <!-- Gemstone (R-grade) -->
+			</spoil>
+		</dropLists>
 	</npc>
-	<npc id="23139" level="103" type="Monster" name="Embryo Researcher">
+	<npc id="23139" level="95" type="Monster" name="Embryo Researcher">
 		<parameters>
 			<param name="IsAggressive" value="1" />
 			<skill name="Skill01_ID" id="1653" level="1" />
@@ -1873,16 +1965,16 @@
 		<acquire exp="731391143" sp="731384" />
 		<equipment rhand="10278" lhand="10278" /> <!-- Monster Only (Behamah Dual) / Monster Only (Behamah Dual) -->
 		<stats str="88" int="79" dex="55" wit="78" con="82" men="78">
-			<vitals hp="1032551.70351" hpRegen="9.5" mp="30638.769" mpRegen="3.3" />
-			<attack physical="49070" magical="38776" random="30" critical="4.75" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
-			<defence physical="4489" magical="2606" />
+			<vitals hp="321920.231213873" hpRegen="9.5" mp="22058.0858085809" mpRegen="3.3" />
+			<attack physical="17949.4405915197" magical="1932.0183629253" random="30" critical="4" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
+			<defence physical="388.96873877111" magical="221.168361895478" />
 			<speed>
 				<walk ground="29" />
 				<run ground="160" />
 			</speed>
 			<attribute>
-				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 				<attack type="DARK" value="330" />
+				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 			</attribute>
 		</stats>
 		<status attackable="true" />
@@ -1891,19 +1983,34 @@
 			<height normal="33" />
 		</collision>
 		<skillList>
+			<skill id="4408" level="9" /> <!-- HP Increase (1/2x) -->
+			<skill id="4410" level="14" /> <!-- Strong P. Atk. -->
+			<skill id="4411" level="13" /> <!-- Slightly Strong M. Atk. -->
+			<skill id="4412" level="13" /> <!-- Slightly Strong P. Def. -->
+			<skill id="4413" level="13" /> <!-- Slightly Strong M. Def. -->
+			<skill id="4415" level="3" /> <!-- One-handed Sword -->
 			<skill id="4416" level="16" /> <!-- Dark Elves -->
-			<skill id="5467" level="1" /> <!-- Dark Attack -->
-			<skill id="14821" level="1" /> <!-- Instant Kill Attack Resistance -->
-			<skill id="4435" level="5" /> <!-- High Stun Attack Resistance -->
 			<skill id="5328" level="1" /> <!-- Unholy Strike -->
+			<skill id="5467" level="1" /> <!-- Dark Attack -->
+			<skill id="14765" level="3" /> <!-- Blood Siphon Resistance -->
 		</skillList>
 		<ai aggroRange="300" isAggressive="true" clanHelpRange="300">
 			<clanList>
 				<clan>EMBRYO_LOW</clan>
 			</clanList>
 		</ai>
+		<dropLists>
+			<drop>
+				<item id="57" min="2000" max="5000" chance="70" /> <!-- Adena -->
+				<item id="17527" min="1" max="1" chance="0.3003003003003" /> <!-- Scroll: Enchant Armor (R-grade) -->
+				<item id="17526" min="1" max="1" chance="0.0750187546886722" /> <!-- Scroll: Enchant Weapon (R-grade) -->
+			</drop>
+			<spoil>
+				<item id="36533" min="1" max="1" chance="15" /> <!-- Synthetic Braid -->
+			</spoil>
+		</dropLists>
 	</npc>
-	<npc id="23140" level="103" type="Monster" name="Embryo Watchman">
+	<npc id="23140" level="95" type="Monster" name="Embryo Watchman">
 		<parameters>
 			<param name="IsAggressive" value="1" />
 			<skill name="Skill01_ID" id="1654" level="1" />
@@ -1915,16 +2022,16 @@
 		<equipment rhand="15302" />
 		<acquire exp="731391143" sp="731384" />
 		<stats str="88" int="79" dex="55" wit="78" con="82" men="78">
-			<vitals hp="1032551.70351" hpRegen="9.5" mp="30638.769" mpRegen="3.3" />
-			<attack physical="49070" magical="38776" random="30" critical="4.75" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
-			<defence physical="4489" magical="2606" />
+			<vitals hp="321920.231213873" hpRegen="9.5" mp="22058.0858085809" mpRegen="3.3" />
+			<attack physical="14647.1473131245" magical="1932.0183629253" random="30" critical="8" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
+			<defence physical="311.264822134387" magical="176.993983983379" />
 			<speed>
 				<walk ground="30" />
 				<run ground="160" />
 			</speed>
 			<attribute>
-				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 				<attack type="DARK" value="330" />
+				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 			</attribute>
 		</stats>
 		<status attackable="true" />
@@ -1933,18 +2040,33 @@
 			<height normal="29" />
 		</collision>
 		<skillList>
+			<skill id="4408" level="9" /> <!-- HP Increase (1/2x) -->
+			<skill id="4410" level="13" /> <!-- Slightly Strong P. Atk. -->
+			<skill id="4411" level="13" /> <!-- Slightly Strong M. Atk. -->
+			<skill id="4412" level="13" /> <!-- Slightly Strong P. Def. -->
+			<skill id="4413" level="13" /> <!-- Slightly Strong M. Def. -->
+			<skill id="4415" level="9" /> <!-- Bow -->
 			<skill id="4416" level="15" /> <!-- Elves -->
-			<skill id="5467" level="1" /> <!-- Dark Attack -->
-			<skill id="14821" level="1" /> <!-- Instant Kill Attack Resistance -->
 			<skill id="5298" level="1" /> <!-- Power Shot -->
+			<skill id="5467" level="1" /> <!-- Dark Attack -->
+			<skill id="14765" level="3" /> <!-- Blood Siphon Resistance -->
 		</skillList>
 		<ai aggroRange="300" isAggressive="true" clanHelpRange="300">
 			<clanList>
 				<clan>EMBRYO_LOW</clan>
 			</clanList>
 		</ai>
+		<dropLists>
+			<drop>
+				<item id="57" min="2000" max="5000" chance="70" /> <!-- Adena -->
+				<item id="17527" min="1" max="1" chance="0.3003003003003" /> <!-- Scroll: Enchant Armor (R-grade) -->
+			</drop>
+			<spoil>
+				<item id="36533" min="1" max="1" chance="15" /> <!-- Synthetic Braid -->
+			</spoil>
+		</dropLists>
 	</npc>
-	<npc id="23141" level="103" type="Monster" name="Embryo Fighter">
+	<npc id="23141" level="95" type="Monster" name="Embryo Fighter">
 		<parameters>
 			<param name="IsAggressive" value="1" />
 			<skill name="Skill01_ID" id="1687" level="1" />
@@ -1956,16 +2078,16 @@
 		<equipment rhand="10004" />
 		<acquire exp="731391143" sp="731384" />
 		<stats str="88" int="79" dex="55" wit="78" con="82" men="78">
-			<vitals hp="1032551.70351" hpRegen="9.5" mp="30638.769" mpRegen="3.3" />
-			<attack physical="49070" magical="38776" random="30" critical="4.75" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
-			<defence physical="4489" magical="2606" />
+			<vitals hp="321920.231213873" hpRegen="9.5" mp="33087.1287128713" mpRegen="3.3" />
+			<attack physical="17949.2428215681" magical="3863.97946808511" random="30" critical="4" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
+			<defence physical="311.264822134387" magical="220.903097174706" />
 			<speed>
 				<walk ground="40" />
 				<run ground="160" />
 			</speed>
 			<attribute>
-				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 				<attack type="DARK" value="330" />
+				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 			</attribute>
 		</stats>
 		<status attackable="true" />
@@ -1974,19 +2096,33 @@
 			<height normal="36" />
 		</collision>
 		<skillList>
+			<skill id="4408" level="9" /> <!-- HP Increase (1/2x) -->
+			<skill id="4410" level="13" /> <!-- Slightly Strong P. Atk. -->
+			<skill id="4411" level="14" /> <!-- Strong M. Atk. -->
+			<skill id="4412" level="13" /> <!-- Slightly Strong P. Def. -->
+			<skill id="4413" level="14" /> <!-- Strong M. Def. -->
+			<skill id="4415" level="3" /> <!-- One-handed Sword -->
 			<skill id="4416" level="17" /> <!-- Orcs -->
-			<skill id="5467" level="1" /> <!-- Dark Attack -->
-			<skill id="14821" level="1" /> <!-- Instant Kill Attack Resistance -->
-			<skill id="4435" level="5" /> <!-- High Stun Attack Resistance -->
 			<skill id="5273" level="1" /> <!-- Power Strike -->
+			<skill id="5467" level="1" /> <!-- Dark Attack -->
+			<skill id="14765" level="3" /> <!-- Blood Siphon Resistance -->
 		</skillList>
 		<ai aggroRange="300" isAggressive="true" clanHelpRange="300">
 			<clanList>
 				<clan>EMBRYO_LOW</clan>
 			</clanList>
 		</ai>
+		<dropLists>
+			<drop>
+				<item id="57" min="2000" max="5000" chance="70" /> <!-- Adena -->
+				<item id="17526" min="1" max="1" chance="0.149925037481259" /> <!-- Scroll: Enchant Weapon (R-grade) -->
+			</drop>
+			<spoil>
+				<item id="36533" min="1" max="1" chance="15" /> <!-- Synthetic Braid -->
+			</spoil>
+		</dropLists>
 	</npc>
-	<npc id="23142" level="103" type="Monster" name="Embryo Guard">
+	<npc id="23142" level="95" type="Monster" name="Embryo Guard">
 		<parameters>
 			<param name="IsAggressive" value="1" />
 			<skill name="Skill01_ID" id="1682" level="1" />
@@ -1998,16 +2134,16 @@
 		<acquire exp="731391143" sp="731384" />
 		<equipment rhand="13979" lhand="13980" /> <!-- Monster Only (Dragontroop Commando) / Monster Only (Dragontroop Defender) -->
 		<stats str="88" int="79" dex="55" wit="78" con="82" men="78">
-			<vitals hp="1032551.70351" hpRegen="9.5" mp="30638.769" mpRegen="3.3" />
-			<attack physical="49070" magical="38776" random="30" critical="4.75" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
-			<defence physical="4489" magical="2606" />
+			<vitals hp="321920.231213873" hpRegen="9.5" mp="22058.0858085809" mpRegen="3.3" />
+			<attack physical="17949.5424805961" magical="1931.98433655175" random="30" critical="4" accuracy="4.75" attackSpeed="250" type="SWORD" range="40" distance="80" width="120" />
+			<defence physical="388.607388035306" magical="220.903097174706" />
 			<speed>
 				<walk ground="30" />
 				<run ground="160" />
 			</speed>
 			<attribute>
-				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 				<attack type="DARK" value="330" />
+				<defence fire="250" water="250" wind="250" earth="250" holy="200" dark="250" />
 			</attribute>
 		</stats>
 		<status attackable="true" />
@@ -2016,17 +2152,31 @@
 			<height normal="29" />
 		</collision>
 		<skillList>
+			<skill id="4408" level="9" /> <!-- HP Increase (1/2x) -->
+			<skill id="4410" level="12" /> <!-- Slightly Strong P. Atk. -->
+			<skill id="4411" level="12" /> <!-- Slightly Strong M. Atk. -->
+			<skill id="4412" level="14" /> <!-- Strong P. Def. -->
+			<skill id="4413" level="14" /> <!-- Strong M. Def. -->
+			<skill id="4415" level="3" /> <!-- One-handed Sword -->
 			<skill id="4416" level="14" /> <!-- Humans -->
-			<skill id="5467" level="1" /> <!-- Dark Attack -->
-			<skill id="14821" level="1" /> <!-- Instant Kill Attack Resistance -->
-			<skill id="4435" level="5" /> <!-- High Stun Attack Resistance -->
 			<skill id="5273" level="1" /> <!-- Power Strike -->
+			<skill id="5467" level="1" /> <!-- Dark Attack -->
+			<skill id="14765" level="3" /> <!-- Blood Siphon Resistance -->
 		</skillList>
 		<ai aggroRange="300" isAggressive="true" clanHelpRange="300">
 			<clanList>
 				<clan>EMBRYO_LOW</clan>
 			</clanList>
 		</ai>
+		<dropLists>
+			<drop>
+				<item id="57" min="2000" max="5000" chance="70" /> <!-- Adena -->
+				<item id="17526" min="1" max="1" chance="0.149925037481259" /> <!-- Scroll: Enchant Weapon (R-grade) -->
+			</drop>
+			<spoil>
+				<item id="36533" min="1" max="1" chance="15" /> <!-- Synthetic Braid -->
+			</spoil>
+		</dropLists>
 	</npc>
 	<npc id="23143" level="99" type="Monster" name="Octavis' Gladiator">
 		<!-- AUTO GENERATED NPC TODO: FIX IT -->
